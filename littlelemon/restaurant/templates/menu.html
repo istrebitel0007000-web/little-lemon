@@ -1,0 +1,572 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap');
+
+  :root {
+    --red: #c0392b;
+    --red-light: #fdecea;
+    --gold: #f57f17;
+    --green: #2e7d32;
+    --bg: #faf9f7;
+    --card-bg: #ffffff;
+    --border: #ece9e4;
+    --text: #1a1a1a;
+    --muted: #6b6460;
+  }
+
+  * { box-sizing: border-box; }
+
+  body { background: var(--bg); font-family: 'DM Sans', sans-serif; }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .menu-section { margin-bottom: 56px; }
+
+  .menu-section > h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    border-bottom: 2px solid var(--red);
+    padding-bottom: 10px;
+    color: var(--red);
+    margin-bottom: 20px;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  .menu-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .menu-item-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    background: #f0ede8;
+  }
+
+  .menu-item-img-placeholder {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, #f5f0eb 0%, #ede8e2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+  }
+
+  .menu-item-body {
+    padding: 14px 16px 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-item h3 {
+    margin: 0 0 6px;
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.35;
+  }
+
+  .menu-item .desc {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin: 0 0 10px;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .menu-item .price {
+    font-weight: 700;
+    color: var(--red);
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-left: 5px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .badge-veg     { background: #e8f5e9; color: var(--green); }
+  .badge-spicy   { background: var(--red-light); color: var(--red); }
+  .badge-popular { background: #fff8e1; color: var(--gold); }
+
+  /* Sub-section headers in Drinks */
+  .subsection-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #555;
+    margin: 24px 0 8px;
+    padding-left: 4px;
+    border-left: 3px solid var(--red);
+  }
+</style>
+
+<h1>Our Menu</h1>
+
+<!-- ── FAST FOOD ─────────────────────────────────────────── -->
+<div class="menu-section">
+  <h2>🍔 Fast Food</h2>
+  <div class="menu-grid">
+    {% for item in menu %}
+      <div class="menu-item">
+        {% if item.image %}
+          <img class="menu-item-img" src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">
+        {% else %}
+          <div class="menu-item-img-placeholder">🍽️</div>
+        {% endif %}
+        <div class="menu-item-body">
+          <h3>{{ item.name }}</h3>
+          <p class="price">RM {{ item.price }}</p>
+        </div>
+      </div>
+    {% empty %}
+      <p style="grid-column: 1/-1; text-align: center; color: #999; padding: 40px;">No menu items available</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ── SALADS ─────────────────────────────────────────────── -->
+<div class="menu-section">
+  <h2>🥗 Salads</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/caesar_salad.jpg' %}" alt="Caesar Salad" loading="lazy">
+      <div class="menu-item-body"><h3>Caesar Salad <span class="badge badge-veg">Veg</span><span class="badge badge-popular">★ Popular</span></h3><p class="desc">Romaine, parmesan, croutons, Caesar dressing</p><p class="price">RM 13.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/greek_salad.jpg' %}" alt="Greek Salad" loading="lazy">
+      <div class="menu-item-body"><h3>Greek Salad <span class="badge badge-veg">Veg</span></h3><p class="desc">Cucumber, tomato, olives, feta cheese, oregano</p><p class="price">RM 12.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/chicken_salad.jpg' %}" alt="Grilled Chicken Salad" loading="lazy">
+      <div class="menu-item-body"><h3>Grilled Chicken Salad</h3><p class="desc">Mixed greens, grilled chicken strips, honey mustard dressing</p><p class="price">RM 15.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/tuna_nicoise.jpg' %}" alt="Tuna Nicoise" loading="lazy">
+      <div class="menu-item-body"><h3>Tuna Nicoise</h3><p class="desc">Seared tuna, green beans, boiled egg, olives, vinaigrette</p><p class="price">RM 16.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/garden_salad.jpg' %}" alt="Garden Salad" loading="lazy">
+      <div class="menu-item-body"><h3>Garden Salad <span class="badge badge-veg">Veg</span></h3><p class="desc">Seasonal greens, cherry tomatoes, cucumber, balsamic glaze</p><p class="price">RM 10.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/avocado_prawn.jpg' %}" alt="Avocado Prawn Salad" loading="lazy">
+      <div class="menu-item-body"><h3>Avocado &amp; Prawn Salad <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Fresh prawns, avocado, mango, citrus dressing</p><p class="price">RM 18.90</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PASTA & MAINS ──────────────────────────────────────── -->
+<div class="menu-section">
+  <h2>🍝 Pasta &amp; Mains</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/carbonara.jpg' %}" alt="Spaghetti Carbonara" loading="lazy">
+      <div class="menu-item-body"><h3>Spaghetti Carbonara <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Creamy egg sauce, crispy bacon, parmesan, black pepper</p><p class="price">RM 16.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/arrabbiata.jpg' %}" alt="Penne Arrabbiata" loading="lazy">
+      <div class="menu-item-body"><h3>Penne Arrabbiata <span class="badge badge-veg">Veg</span><span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Penne in spicy tomato garlic sauce</p><p class="price">RM 13.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/salmon.jpg' %}" alt="Grilled Salmon" loading="lazy">
+      <div class="menu-item-body"><h3>Grilled Salmon</h3><p class="desc">Atlantic salmon, lemon butter, steamed vegetables, mashed potato</p><p class="price">RM 28.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/chicken_chop.jpg' %}" alt="Chicken Chop" loading="lazy">
+      <div class="menu-item-body"><h3>Chicken Chop <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Pan-grilled chicken, black pepper sauce, fries, coleslaw</p><p class="price">RM 19.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/lamb_rack.jpg' %}" alt="Lamb Rack" loading="lazy">
+      <div class="menu-item-body"><h3>Lamb Rack</h3><p class="desc">3-bone rack, rosemary jus, roasted potatoes, green beans</p><p class="price">RM 38.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/risotto.jpg' %}" alt="Mushroom Risotto" loading="lazy">
+      <div class="menu-item-body"><h3>Mushroom Risotto <span class="badge badge-veg">Veg</span></h3><p class="desc">Arborio rice, mixed mushrooms, truffle oil, parmesan</p><p class="price">RM 17.90</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PIZZA ──────────────────────────────────────────────── -->
+<div class="menu-section">
+  <h2>🍕 Pizza</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/pizza_margherita.jpg' %}" alt="Margherita Pizza" loading="lazy">
+      <div class="menu-item-body"><h3>Margherita <span class="badge badge-veg">Veg</span></h3><p class="desc">Tomato base, fresh mozzarella, basil</p><p class="price">RM 18.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/pizza_bbq.jpg' %}" alt="BBQ Chicken Pizza" loading="lazy">
+      <div class="menu-item-body"><h3>BBQ Chicken <span class="badge badge-popular">★ Popular</span></h3><p class="desc">BBQ sauce, chicken, red onion, cheddar, coriander</p><p class="price">RM 22.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/pizza_pepperoni.jpg' %}" alt="Pepperoni Pizza" loading="lazy">
+      <div class="menu-item-body"><h3>Pepperoni</h3><p class="desc">Classic tomato base, mozzarella, double pepperoni</p><p class="price">RM 22.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/pizza_veggie.jpg' %}" alt="Veggie Supreme Pizza" loading="lazy">
+      <div class="menu-item-body"><h3>Veggie Supreme <span class="badge badge-veg">Veg</span></h3><p class="desc">Bell peppers, mushroom, olives, onion, mozzarella</p><p class="price">RM 20.90</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SNACKS & SIDES ─────────────────────────────────────── -->
+<div class="menu-section">
+  <h2>🍟 Snacks &amp; Sides</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/fries.jpg' %}" alt="Crispy Fries" loading="lazy">
+      <div class="menu-item-body"><h3>Crispy Fries</h3><p class="desc">Shoestring fries with sea salt, served with ketchup</p><p class="price">RM 5.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/loaded_fries.jpg' %}" alt="Loaded Fries" loading="lazy">
+      <div class="menu-item-body"><h3>Loaded Fries <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Fries topped with cheese sauce, bacon bits, jalapeños</p><p class="price">RM 10.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/onion_rings.jpg' %}" alt="Onion Rings" loading="lazy">
+      <div class="menu-item-body"><h3>Onion Rings</h3><p class="desc">Beer-battered rings, chipotle dip</p><p class="price">RM 7.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/garlic_bread.jpg' %}" alt="Garlic Bread" loading="lazy">
+      <div class="menu-item-body"><h3>Garlic Bread <span class="badge badge-veg">Veg</span></h3><p class="desc">Toasted baguette, garlic butter, parsley</p><p class="price">RM 5.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/coleslaw.jpg' %}" alt="Coleslaw" loading="lazy">
+      <div class="menu-item-body"><h3>Coleslaw <span class="badge badge-veg">Veg</span></h3><p class="desc">Creamy house-made coleslaw</p><p class="price">RM 4.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/wings.jpg' %}" alt="Chicken Wings" loading="lazy">
+      <div class="menu-item-body"><h3>Chicken Wings (6 pcs) <span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Spicy buffalo wings with blue cheese dip</p><p class="price">RM 13.90</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DESSERTS ───────────────────────────────────────────── -->
+<div class="menu-section">
+  <h2>🍰 Desserts</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/lava_cake.jpg' %}" alt="Chocolate Lava Cake" loading="lazy">
+      <div class="menu-item-body"><h3>Chocolate Lava Cake <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Warm molten chocolate cake, vanilla ice cream</p><p class="price">RM 12.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/cheesecake.jpg' %}" alt="Cheesecake" loading="lazy">
+      <div class="menu-item-body"><h3>Cheesecake</h3><p class="desc">New York-style baked cheesecake, berry compote</p><p class="price">RM 11.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/tiramisu.jpg' %}" alt="Tiramisu" loading="lazy">
+      <div class="menu-item-body"><h3>Tiramisu</h3><p class="desc">Classic Italian layers of coffee-soaked ladyfingers, mascarpone</p><p class="price">RM 12.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/ice_cream.jpg' %}" alt="Ice Cream" loading="lazy">
+      <div class="menu-item-body"><h3>Ice Cream (2 scoops)</h3><p class="desc">Vanilla / Chocolate / Strawberry — ask server for daily flavours</p><p class="price">RM 7.90</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MALAYSIAN ───────────────────────────────────────────── -->
+<div class="menu-section">
+  <h2>🇲🇾 Malaysian</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/nasi_lemak.jpg' %}" alt="Nasi Lemak" loading="lazy">
+      <div class="menu-item-body"><h3>Nasi Lemak <span class="badge badge-popular">★ Popular</span><span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Coconut rice, sambal, fried anchovies, boiled egg, cucumber, roasted peanuts</p><p class="price">RM 10.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/nasi_lemak_ayam.jpg' %}" alt="Nasi Lemak Ayam Goreng" loading="lazy">
+      <div class="menu-item-body"><h3>Nasi Lemak Ayam Goreng <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Coconut rice with crispy fried chicken, sambal, full accompaniments</p><p class="price">RM 14.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/mee_goreng.jpg' %}" alt="Mee Goreng Mamak" loading="lazy">
+      <div class="menu-item-body"><h3>Mee Goreng Mamak <span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Wok-fried yellow noodles, egg, tofu, prawn, bean sprouts, lime</p><p class="price">RM 11.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/char_kuey_teow.jpg' %}" alt="Char Kuey Teow" loading="lazy">
+      <div class="menu-item-body"><h3>Char Kuey Teow <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Flat rice noodles, prawns, cockles, egg, bean sprouts, dark soy, wok hei</p><p class="price">RM 13.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/laksa_asam.jpg' %}" alt="Laksa Asam" loading="lazy">
+      <div class="menu-item-body"><h3>Laksa Asam <span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Penang-style sour fish broth, thick rice noodles, mackerel, prawn paste</p><p class="price">RM 13.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/curry_laksa.jpg' %}" alt="Curry Laksa" loading="lazy">
+      <div class="menu-item-body"><h3>Curry Laksa <span class="badge badge-popular">★ Popular</span><span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Creamy coconut curry broth, noodles, tofu puffs, chicken, cockles</p><p class="price">RM 14.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/rendang.jpg' %}" alt="Rendang Daging" loading="lazy">
+      <div class="menu-item-body"><h3>Rendang Daging <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Slow-braised dry beef rendang, fragrant coconut milk, lemongrass, served with nasi impit</p><p class="price">RM 18.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/ayam_percik.jpg' %}" alt="Ayam Percik" loading="lazy">
+      <div class="menu-item-body"><h3>Ayam Percik <span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Grilled marinated chicken, spiced coconut glaze, steamed white rice</p><p class="price">RM 16.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/roti_canai.jpg' %}" alt="Roti Canai" loading="lazy">
+      <div class="menu-item-body"><h3>Roti Canai <span class="badge badge-veg">Veg</span><span class="badge badge-popular">★ Popular</span></h3><p class="desc">Flaky flatbread served with dhal curry and fish curry dips</p><p class="price">RM 5.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/nasi_goreng.jpg' %}" alt="Nasi Goreng Kampung" loading="lazy">
+      <div class="menu-item-body"><h3>Nasi Goreng Kampung <span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Village-style fried rice, anchovies, egg, kangkung, sambal belacan</p><p class="price">RM 11.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/satay.jpg' %}" alt="Satay" loading="lazy">
+      <div class="menu-item-body"><h3>Satay (10 pcs) <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Chargrilled chicken &amp; beef skewers, peanut sauce, ketupat, cucumber, onion</p><p class="price">RM 15.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/ikan_bakar.jpg' %}" alt="Ikan Bakar" loading="lazy">
+      <div class="menu-item-body"><h3>Ikan Bakar <span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Grilled stingray or tilapia, spicy sambal, banana leaf, lime</p><p class="price">RM 19.90</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHINESE ─────────────────────────────────────────────── -->
+<div class="menu-section">
+  <h2>🥢 Chinese</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/wonton_noodle.jpg' %}" alt="Wonton Noodle Soup" loading="lazy">
+      <div class="menu-item-body"><h3>Wonton Noodle Soup <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Silky egg noodles, pork &amp; prawn wontons, char siu, bok choy, clear broth</p><p class="price">RM 12.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/dim_sum.jpg' %}" alt="Dim Sum" loading="lazy">
+      <div class="menu-item-body"><h3>Dim Sum Basket (6 pcs)</h3><p class="desc">Chef's selection: har gow, siu mai, char siu bao, served with soy &amp; chilli</p><p class="price">RM 14.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/chicken_rice.jpg' %}" alt="Hainanese Chicken Rice" loading="lazy">
+      <div class="menu-item-body"><h3>Hainanese Chicken Rice <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Poached or roasted chicken, fragrant rice, chilli sauce, dark soy, ginger paste</p><p class="price">RM 14.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/claypot_tofu.jpg' %}" alt="Claypot Tofu" loading="lazy">
+      <div class="menu-item-body"><h3>Claypot Tofu <span class="badge badge-veg">Veg</span></h3><p class="desc">Silken tofu, mushrooms, mixed vegetables in savoury oyster-sauce gravy</p><p class="price">RM 13.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/kung_pao.jpg' %}" alt="Kung Pao Chicken" loading="lazy">
+      <div class="menu-item-body"><h3>Kung Pao Chicken <span class="badge badge-spicy">🌶 Spicy</span><span class="badge badge-popular">★ Popular</span></h3><p class="desc">Wok-fried chicken, dried chillies, peanuts, Sichuan pepper, served with rice</p><p class="price">RM 16.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/sweet_sour_pork.jpg' %}" alt="Sweet and Sour Pork" loading="lazy">
+      <div class="menu-item-body"><h3>Sweet &amp; Sour Pork</h3><p class="desc">Crispy pork, pineapple, bell peppers in tangy tomato glaze, steamed rice</p><p class="price">RM 16.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/garlic_prawn.jpg' %}" alt="Steamed Garlic Prawn" loading="lazy">
+      <div class="menu-item-body"><h3>Steamed Garlic Prawn</h3><p class="desc">Tiger prawns, minced garlic, glass noodles, light soy, sesame oil</p><p class="price">RM 22.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/braised_duck.jpg' %}" alt="Braised Duck Rice" loading="lazy">
+      <div class="menu-item-body"><h3>Braised Duck Rice <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Slow-braised herbal duck, steamed rice, braised tofu, preserved vegetables</p><p class="price">RM 17.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/char_siu.jpg' %}" alt="Char Siu Pork" loading="lazy">
+      <div class="menu-item-body"><h3>Char Siu Pork</h3><p class="desc">Honey-glazed BBQ pork belly, steamed white rice, light gravy</p><p class="price">RM 16.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/bak_kut_teh.jpg' %}" alt="Bak Kut Teh" loading="lazy">
+      <div class="menu-item-body"><h3>Bak Kut Teh <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Pork ribs in herbal broth, tofu puffs, mushrooms, served with rice &amp; you tiao</p><p class="price">RM 18.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/yang_chow_rice.jpg' %}" alt="Yang Chow Fried Rice" loading="lazy">
+      <div class="menu-item-body"><h3>Yang Chow Fried Rice</h3><p class="desc">Egg fried rice, prawns, char siu, green onion, light soy</p><p class="price">RM 13.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/prawn_noodle.jpg' %}" alt="Prawn Noodle Soup" loading="lazy">
+      <div class="menu-item-body"><h3>Prawn Noodle Soup (Hokkien Mee)</h3><p class="desc">Rich prawn &amp; pork rib broth, yellow noodles, bean sprouts, sambal</p><p class="price">RM 14.90</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── THAI ────────────────────────────────────────────────── -->
+<div class="menu-section">
+  <h2>🇹🇭 Thai</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/tom_yum.jpg' %}" alt="Tom Yum Soup" loading="lazy">
+      <div class="menu-item-body"><h3>Tom Yum Soup <span class="badge badge-popular">★ Popular</span><span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Aromatic lemongrass broth, prawns, mushrooms, galangal, lime leaves, chilli</p><p class="price">RM 16.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/tom_kha.jpg' %}" alt="Tom Kha Gai" loading="lazy">
+      <div class="menu-item-body"><h3>Tom Kha Gai</h3><p class="desc">Creamy coconut milk soup, chicken, galangal, mushrooms, kaffir lime</p><p class="price">RM 15.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/pad_thai.jpg' %}" alt="Pad Thai" loading="lazy">
+      <div class="menu-item-body"><h3>Pad Thai <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Wok-fried rice noodles, egg, tofu, bean sprouts, tamarind sauce, crushed peanuts, lime</p><p class="price">RM 14.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/green_curry.jpg' %}" alt="Green Curry" loading="lazy">
+      <div class="menu-item-body"><h3>Green Curry (Gaeng Keow Wan) <span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Chicken in fragrant green curry, coconut milk, Thai aubergine, basil, jasmine rice</p><p class="price">RM 16.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/massaman.jpg' %}" alt="Massaman Curry" loading="lazy">
+      <div class="menu-item-body"><h3>Massaman Curry <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Slow-cooked beef, potatoes, roasted peanuts in rich Massaman coconut gravy</p><p class="price">RM 18.90</p></div>
+    </div>
+    <div class="menu-item"> 
+      <img class="menu-item-img" src="{% static 'images/menu/som_tum.jpg' %}" alt="Som Tum" loading="lazy">
+      <div class="menu-item-body"><h3>Som Tum (Green Papaya Salad) <span class="badge badge-spicy">🌶 Spicy</span><span class="badge badge-veg">Veg</span></h3><p class="desc">Shredded green papaya, cherry tomatoes, long beans, lime, fish sauce, chilli, peanuts</p><p class="price">RM 11.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/larb_gai.jpg' %}" alt="Larb Gai" loading="lazy">
+      <div class="menu-item-body"><h3>Larb Gai <span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Minced chicken salad, toasted rice powder, shallots, mint, chilli, lime dressing</p><p class="price">RM 13.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/basil_pork.jpg' %}" alt="Basil Pork" loading="lazy">
+      <div class="menu-item-body"><h3>Basil Pork (Pad Kra Pao) <span class="badge badge-popular">★ Popular</span><span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Stir-fried minced pork, Thai holy basil, chilli, fried egg, jasmine rice</p><p class="price">RM 14.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/mango_sticky.jpg' %}" alt="Mango Sticky Rice" loading="lazy">
+      <div class="menu-item-body"><h3>Mango Sticky Rice <span class="badge badge-popular">★ Popular</span><span class="badge badge-veg">Veg</span></h3><p class="desc">Sweet glutinous rice, fresh ripe mango, salted coconut cream</p><p class="price">RM 10.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/pork_neck.jpg' %}" alt="Thai Grilled Pork Neck" loading="lazy">
+      <div class="menu-item-body"><h3>Thai Grilled Pork Neck (Kor Moo Yang)</h3><p class="desc">Chargrilled marinated pork neck, sticky rice, spicy jaew dipping sauce</p><p class="price">RM 17.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/pineapple_rice.jpg' %}" alt="Pineapple Fried Rice" loading="lazy">
+      <div class="menu-item-body"><h3>Pineapple Fried Rice <span class="badge badge-veg">Veg</span></h3><p class="desc">Fragrant rice in pineapple shell, cashews, raisins, egg, light curry powder</p><p class="price">RM 14.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/fish_cake.jpg' %}" alt="Thai Fish Cake" loading="lazy">
+      <div class="menu-item-body"><h3>Thai Fish Cake (Tod Mun Pla) <span class="badge badge-spicy">🌶 Spicy</span></h3><p class="desc">Fried fish cakes, red curry paste, kaffir lime leaves, sweet chilli dip</p><p class="price">RM 12.90</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DRINKS ─────────────────────────────────────────────── -->
+<div class="menu-section">
+  <h2>🥤 Drinks</h2>
+
+  <p class="subsection-title">☕ Hot Beverages</p>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/hot_coffee.jpg' %}" alt="Hot Coffee" loading="lazy">
+      <div class="menu-item-body"><h3>Hot Coffee</h3><p class="desc">Americano / Latte / Cappuccino / Flat White</p><p class="price">RM 7.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/hot_tea.jpg' %}" alt="Hot Tea" loading="lazy">
+      <div class="menu-item-body"><h3>Hot Tea</h3><p class="desc">English Breakfast / Earl Grey / Green Tea / Chamomile</p><p class="price">RM 5.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/teh_tarik.jpg' %}" alt="Teh Tarik" loading="lazy">
+      <div class="menu-item-body"><h3>Teh Tarik <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Classic Malaysian pulled milk tea, strong &amp; frothy</p><p class="price">RM 5.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/kopi_o.jpg' %}" alt="Kopi O" loading="lazy">
+      <div class="menu-item-body"><h3>Kopi O</h3><p class="desc">Traditional black Malaysian coffee, bold &amp; aromatic</p><p class="price">RM 4.90</p></div>
+    </div>
+  </div>
+
+  <p class="subsection-title">🧊 Iced &amp; Cold Beverages</p>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/iced_coffee.jpg' %}" alt="Iced Coffee" loading="lazy">
+      <div class="menu-item-body"><h3>Iced Coffee <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Double-shot espresso over ice, choice of oat / full cream / soy milk</p><p class="price">RM 8.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/iced_teh.jpg' %}" alt="Iced Teh Tarik" loading="lazy">
+      <div class="menu-item-body"><h3>Iced Teh Tarik</h3><p class="desc">Chilled pulled milk tea, sweetened condensed milk</p><p class="price">RM 5.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/lemon_tea.jpg' %}" alt="Iced Lemon Tea" loading="lazy">
+      <div class="menu-item-body"><h3>Iced Lemon Tea</h3><p class="desc">Brewed black tea, fresh lemon, light honey syrup</p><p class="price">RM 6.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/thai_iced_tea.jpg' %}" alt="Thai Iced Tea" loading="lazy">
+      <div class="menu-item-body"><h3>Thai Iced Tea <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Strong orange spiced tea, sweetened condensed milk, served over ice</p><p class="price">RM 7.90</p></div>
+    </div>
+  </div>
+
+  <p class="subsection-title">🫧 Soft Drinks &amp; Sodas</p>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/cola.jpg' %}" alt="Coca-Cola" loading="lazy">
+      <div class="menu-item-body"><h3>Coca-Cola <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Classic Coke, ice cold, 325 ml can</p><p class="price">RM 4.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/cola_zero.jpg' %}" alt="Coca-Cola Zero" loading="lazy">
+      <div class="menu-item-body"><h3>Coca-Cola Zero</h3><p class="desc">Zero sugar Coke, same great taste, 325 ml can</p><p class="price">RM 4.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/pepsi.jpg' %}" alt="Pepsi" loading="lazy">
+      <div class="menu-item-body"><h3>Pepsi</h3><p class="desc">Pepsi Cola, chilled, 325 ml can</p><p class="price">RM 4.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/sprite.jpg' %}" alt="Sprite" loading="lazy">
+      <div class="menu-item-body"><h3>Sprite</h3><p class="desc">Crisp lemon-lime soda, 325 ml can</p><p class="price">RM 4.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/fanta.jpg' %}" alt="Fanta Orange" loading="lazy">
+      <div class="menu-item-body"><h3>Fanta Orange</h3><p class="desc">Fruity orange soda, 325 ml can</p><p class="price">RM 4.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/water.jpg' %}" alt="Mineral Water" loading="lazy">
+      <div class="menu-item-body"><h3>Mineral Water</h3><p class="desc">Still, 500 ml bottle</p><p class="price">RM 3.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/sparkling.jpg' %}" alt="Sparkling Water" loading="lazy">
+      <div class="menu-item-body"><h3>Sparkling Water</h3><p class="desc">Carbonated mineral water, 330 ml can</p><p class="price">RM 5.90</p></div>
+    </div>
+  </div>
+
+  <p class="subsection-title">🍹 Juices &amp; Smoothies</p>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/orange_juice.jpg' %}" alt="Fresh Orange Juice" loading="lazy">
+      <div class="menu-item-body"><h3>Fresh Orange Juice</h3><p class="desc">Freshly squeezed, no added sugar</p><p class="price">RM 8.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/watermelon_juice.jpg' %}" alt="Watermelon Juice" loading="lazy">
+      <div class="menu-item-body"><h3>Watermelon Juice <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Blended fresh watermelon, served chilled</p><p class="price">RM 7.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/mango_smoothie.jpg' %}" alt="Mango Smoothie" loading="lazy">
+      <div class="menu-item-body"><h3>Mango Smoothie <span class="badge badge-popular">★ Popular</span></h3><p class="desc">Blended fresh mango, yoghurt, honey</p><p class="price">RM 9.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/sugarcane.jpg' %}" alt="Sugarcane Juice" loading="lazy">
+      <div class="menu-item-body"><h3>Sugarcane Juice</h3><p class="desc">Freshly pressed sugarcane, lemon &amp; ginger optional</p><p class="price">RM 6.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/bandung.jpg' %}" alt="Sirap Bandung" loading="lazy">
+      <div class="menu-item-body"><h3>Sirap Bandung</h3><p class="desc">Rose syrup, evaporated milk, chilled — Malaysian classic</p><p class="price">RM 5.90</p></div>
+    </div>
+    <div class="menu-item">
+      <img class="menu-item-img" src="{% static 'images/menu/coconut.jpg' %}" alt="Coconut Water" loading="lazy">
+      <div class="menu-item-body"><h3>Coconut Water</h3><p class="desc">Young green coconut, served chilled in shell</p><p class="price">RM 8.90</p></div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

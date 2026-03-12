@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Little Lemon — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-dark: #3d5a4f;
+    --green-mid: #4e7264;
+    --green-light: #c8d8c8;
+    --cream: #f5f2ec;
+    --text: #2a2a2a;
+    --text-muted: #7a7a6e;
+  }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background-color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    width: 100%;
+    background: var(--cream);
+    padding: 22px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .logo-icon { width: 48px; height: 58px; }
+
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    letter-spacing: 0.18em;
+    color: var(--green-dark);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  nav {
+    width: 100%;
+    background: var(--green-dark);
+    padding: 13px 0;
+    display: flex;
+    justify-content: center;
+    gap: 36px;
+  }
+
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    opacity: 0.92;
+    transition: opacity .2s;
+  }
+  nav a:hover { opacity: 1; text-decoration: underline; }
+
+  main {
+    flex: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 52px 24px 60px;
+    width: 100%;
+  }
+
+  .greeting {
+    margin-bottom: 36px;
+  }
+
+  .greeting h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--green-dark);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .greeting p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .stat-card {
+    background: #fff;
+    border-radius: 4px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 16px rgba(61,90,79,.08);
+    animation: fadeUp .5s cubic-bezier(.22,1,.36,1) both;
+  }
+  .stat-card:nth-child(2) { animation-delay: .08s; }
+  .stat-card:nth-child(3) { animation-delay: .16s; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--green-dark);
+    font-weight: 600;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--green-dark);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  .table-wrap {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 16px rgba(61,90,79,.08);
+    overflow: hidden;
+    margin-bottom: 32px;
+    animation: fadeUp .6s .2s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  thead {
+    background: var(--green-dark);
+    color: #fff;
+  }
+
+  th {
+    padding: 12px 18px;
+    text-align: left;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 13px 18px;
+    border-bottom: 1px solid #ede8df;
+    color: var(--text);
+    font-weight: 300;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--cream); }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .badge-confirmed { background: #dff0e8; color: #2d7a50; }
+  .badge-pending   { background: #fff3dc; color: #9a6c00; }
+  .badge-cancelled { background: #fde8e8; color: #c0392b; }
+
+  .user-info {
+    background: #fff;
+    border-radius: 4px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 16px rgba(61,90,79,.08);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    animation: fadeUp .5s .05s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--green-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--green-dark);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .user-detail strong {
+    display: block;
+    font-weight: 500;
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  .user-detail span {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .btn-signout {
+    margin-left: auto;
+    padding: 9px 18px;
+    background: transparent;
+    border: 1.5px solid var(--green-dark);
+    border-radius: 3px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--green-dark);
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: background .2s, color .2s;
+  }
+  .btn-signout:hover {
+    background: var(--green-dark);
+    color: #fff;
+  }
+
+  #loadingOverlay {
+    position: fixed;
+    inset: 0;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    transition: opacity .4s;
+  }
+  #loadingOverlay .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--green-dark);
+    margin: 0 4px;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  #loadingOverlay .dot:nth-child(2) { animation-delay: .2s; }
+  #loadingOverlay .dot:nth-child(3) { animation-delay: .4s; }
+  @keyframes pulse {
+    0%,80%,100% { transform: scale(.7); opacity:.4; }
+    40%          { transform: scale(1);  opacity:1; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loadingOverlay">
+  <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+
+<header>
+  <div class="logo-row">
+    <svg class="logo-icon" viewBox="0 0 48 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 6 C10 6 4 20 4 34 C4 46 12 54 24 54 C36 54 44 46 44 34 C44 20 38 6 24 6Z" fill="#3d5a4f"/>
+      <path d="M24 6 C24 6 26 1 30 2 C30 2 27 4 26 8" stroke="#3d5a4f" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M26 5 C26 5 32 2 34 5" stroke="#3d5a4f" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M16 24 C18 30 22 36 24 42" stroke="#c8d8c8" stroke-width="1" stroke-linecap="round" opacity=".6"/>
+      <path d="M20 20 C21 27 23 33 24 42" stroke="#c8d8c8" stroke-width=".7" stroke-linecap="round" opacity=".4"/>
+    </svg>
+    <span class="logo-text">Little Lemon</span>
+  </div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Menu</a>
+    <a href="#">Book</a>
+    <a href="#" onclick="handleLogout(); return false;">Logout</a>
+  </nav>
+</header>
+
+<main>
+  <div class="greeting">
+    <h1 id="greetingText">Good to see you!</h1>
+    <p>Here's a summary of your reservations at Little Lemon.</p>
+  </div>
+
+  <div class="user-info">
+    <div class="avatar" id="avatarEl">?</div>
+    <div class="user-detail">
+      <strong id="userEmail">Loading…</strong>
+      <span id="userMeta">—</span>
+    </div>
+    <button class="btn-signout" onclick="handleLogout()">Sign Out</button>
+  </div>
+
+  <div class="cards-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Bookings</div>
+      <div class="stat-value">3</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Upcoming</div>
+      <div class="stat-value">1</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Loyalty Points</div>
+      <div class="stat-value">240</div>
+    </div>
+  </div>
+
+  <p class="section-title">Your Reservations</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Guests</th>
+          <th>Table</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>15 Mar 2026</td>
+          <td>7:30 PM</td>
+          <td>2</td>
+          <td>Window seat — #4</td>
+          <td><span class="badge badge-confirmed">Confirmed</span></td>
+        </tr>
+        <tr>
+          <td>28 Feb 2026</td>
+          <td>8:00 PM</td>
+          <td>4</td>
+          <td>Garden terrace — #9</td>
+          <td><span class="badge badge-confirmed">Confirmed</span></td>
+        </tr>
+        <tr>
+          <td>10 Jan 2026</td>
+          <td>1:00 PM</td>
+          <td>2</td>
+          <td>Bar counter — #1</td>
+          <td><span class="badge badge-cancelled">Cancelled</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // ============================================================
+  // 🔧 CONFIGURATION — must match login.html
+  // ============================================================
+  const SUPABASE_URL  = 'https://YOUR_PROJECT_ID.supabase.co';
+  const SUPABASE_ANON = 'YOUR_ANON_PUBLIC_KEY';
+  // ============================================================
+
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  (async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+
+    // Guard: redirect to login if not authenticated
+    if (!session) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    const user = session.user;
+
+    // Populate UI
+    document.getElementById('userEmail').textContent = user.email;
+    document.getElementById('userMeta').textContent =
+      'Member since ' + new Date(user.created_at).toLocaleDateString('en-GB', { month:'long', year:'numeric' });
+
+    const initial = (user.email || '?')[0].toUpperCase();
+    document.getElementById('avatarEl').textContent = initial;
+
+    const hour = new Date().getHours();
+    const greet = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+    document.getElementById('greetingText').textContent =
+      greet + (user.user_metadata?.full_name ? ', ' + user.user_metadata.full_name.split(' ')[0] : '') + '!';
+
+    // Hide loading overlay
+    const overlay = document.getElementById('loadingOverlay');
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.style.display = 'none', 400);
+  })();
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    window.location.href = 'login.html';
+  }
+</script>
+</body>
+</html>

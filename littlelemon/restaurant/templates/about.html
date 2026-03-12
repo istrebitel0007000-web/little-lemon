@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<section>
+  <article>
+    <h1>About Us</h1>
+    <!--Begin row-->
+    <div class="row">
+      <!--Begin col-->
+      <div class="column">
+        <p>
+          Based in Kuala Lumpur, Malaysia, Little Lemon is a family owned
+          Multicultural restaurant, focused on traditional recipes served with a
+          modern twist.
+        </p>
+        <p>
+          The chefs draw inspiration from Malaysian, Chinese, and Thai culture
+          and have a menu of 12-15 items that they rotate seasonally.
+        </p>
+
+        <p>
+          The restaurant has a rustic and relaxed atmosphere with moderate
+          prices, making it a popular place for a meal any time of the day.
+        </p>
+
+        <p>
+          Little Lemon is owned by MR ZAFARSHOH, who
+          moved to the Malaysia to pursue their shared dream of owning a
+          restaurant.
+        </p>
+
+        <p>
+          To craft the menu, MR ZAFARSHOH relies on family recipes and his experience
+          as a chef in Malaysia.
+        </p>
+
+        <p>
+          MR ZAFARSHOH does all the marketing for the restaurant and led the effort to
+          expand the menu beyond classic Malaysian to incorporate additional
+          cuisines from the South Asian region.
+        </p>
+      </div>
+      <!--End col-->
+
+      <!--Begin col-->
+      <div class="column">
+        <figure class="figure">
+          <img
+            src="{% static 'img/mario-and-adrian.jpg' %}"
+            alt="Mario and Adrian"
+          />
+          <figcaption class="figure-caption">
+            Little Lemon owner is MR ZAFARSHOH.
+          </figcaption>
+        </figure>
+      </div>
+      <!--End col-->
+    </div>
+    <!--End row-->
+  </article>
+</section>
+{% endblock %}
