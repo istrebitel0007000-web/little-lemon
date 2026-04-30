@@ -6,12 +6,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Nasi Kandar</title>
-    <meta name="description" content="A brief description" />
-    <meta
-      name="author"
-      content="Based in KualaLumpur, Malaysia, Nasi Kandar is a family owned Malay, Chinese, Thai restaurant, focused on traditional recipes served with a modern twist."
-    />
+    <title>{% block title %}Little Lemon{% endblock %}</title>
+    <meta name="description" content="Little Lemon — book a table and explore our menu of Malay, Chinese, Thai and Western dishes." />
+    <meta name="author" content="Little Lemon" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="{% static 'manifest.webmanifest' %}" />
+    <meta name="theme-color" content="#3d5a4f" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Little Lemon" />
+    <link rel="apple-touch-icon" href="{% static 'img/icon-192.png' %}" />
 
     <!-- Load favicon -->
     <link
@@ -55,5 +61,13 @@
 
     <!--Footer content-->
     {% include 'partials/_footer.html' %}
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function () {});
+        });
+      }
+    </script>
   </body>
 </html>

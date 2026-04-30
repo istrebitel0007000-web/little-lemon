@@ -1,29 +1,29 @@
-"""littlelemon URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.urls import path, include
+"""littlelemon URL configuration."""
 from django.contrib import admin
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
+from django.views.static import serve as static_serve
+from django.http import FileResponse
+from pathlib import Path
+
+
+def serve_sw(request):
+    """Serve service worker from root scope (required for site-wide control)."""
+    sw_path = Path(settings.BASE_DIR) / 'restaurant' / 'static' / 'sw.js'
+    response = FileResponse(open(sw_path, 'rb'), content_type='application/javascript')
+    response['Service-Worker-Allowed'] = '/'
+    return response
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('restaurant.urls')),  # this pulls all URLs from restaurant/urls.py
+    path('sw.js', serve_sw, name='service_worker'),
+    path('offline.html', TemplateView.as_view(template_name='offline.html'), name='offline'),
+    path('', include('restaurant.urls')),
 ]
 
-# Serve media files in development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
