@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<section style="max-width:720px;margin:48px auto;padding:24px;background:#fff;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.08);">
+  <a href="{% url 'menu' %}" style="color:#3d5a4f;text-decoration:none;">← Back to menu</a>
+  <h1 style="font-family:'Markazi Text',serif;color:#3d5a4f;margin-top:12px;">{{ item.name }}</h1>
+  {% if item.image %}
+    <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width:100%;max-height:400px;object-fit:cover;border-radius:8px;margin:16px 0;">
+  {% endif %}
+  <p style="font-size:1.4rem;color:#c0392b;font-weight:700;">RM {{ item.price }}</p>
+</section>
+{% endblock %}

@@ -40,6 +40,17 @@
     <!--Header content-->
     {% include 'partials/_header.html' %}
 
+    {% if messages %}
+      <ul class="messages" style="list-style:none; padding:12px 24px; margin:0;">
+        {% for message in messages %}
+          <li class="msg msg-{{ message.tags }}"
+              style="background:#e8f5e9; color:#2e7d32; padding:10px 16px; border-radius:6px; margin:8px 0;">
+            {{ message }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
     <main>{% block content %} {% endblock %}</main>
 
     <!--Footer content-->
