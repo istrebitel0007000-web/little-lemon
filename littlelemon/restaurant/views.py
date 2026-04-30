@@ -62,8 +62,8 @@ def location(request):
     info = {
         'name': 'Little Lemon',
         'address': 'Pavilion Crystal Fountain, Bukit Bintang, 55100 Kuala Lumpur, Malaysia',
-        'phone': '+60 3-2110 8833',
-        'email': 'hello@littlelemon.local',
+        'phone': '+60 194633835',
+        'email': 'istrebitel0007000@gmail.com',
         'hours': [
             ('Monday – Thursday', '11:00 AM – 10:00 PM'),
             ('Friday – Saturday', '11:00 AM – 11:30 PM'),
