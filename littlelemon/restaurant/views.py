@@ -58,6 +58,27 @@ def menu_detail(request, pk):
     return render(request, 'menu_detail.html', {'item': item})
 
 
+def location(request):
+    info = {
+        'name': 'Little Lemon',
+        'address': 'Pavilion Crystal Fountain, Bukit Bintang, 55100 Kuala Lumpur, Malaysia',
+        'phone': '+60 3-2110 8833',
+        'email': 'hello@littlelemon.local',
+        'hours': [
+            ('Monday – Thursday', '11:00 AM – 10:00 PM'),
+            ('Friday – Saturday', '11:00 AM – 11:30 PM'),
+            ('Sunday', '12:00 PM – 9:00 PM'),
+        ],
+        'map_embed_url': (
+            'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d313.7!2d101.71299'
+            '!3d3.14806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2'
+            '!1s0x31cc362c774e6c9b%3A0x77dbaaedd55aecc3!2sPavilion%20Crystal%20Fountain'
+            '!5e0!3m2!1sen!2s!4v1772687579308!5m2!1sen!2s'
+        ),
+    }
+    return render(request, 'location.html', {'info': info})
+
+
 def register(request):
     if request.user.is_authenticated:
         return redirect('home')

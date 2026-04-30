@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('sw.js', serve_sw, name='service_worker'),
     path('offline.html', TemplateView.as_view(template_name='offline.html'), name='offline'),
+    path('accounts/', include('allauth.urls')),
     path('', include('restaurant.urls')),
 ]
 

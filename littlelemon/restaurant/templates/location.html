@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Location — Little Lemon{% endblock %}
+{% block content %}
+<section style="max-width:1100px;margin:32px auto;padding:0 20px;">
+  <h1 style="font-family:'Markazi Text',serif;color:#3d5a4f;font-size:2.2rem;margin-bottom:8px;">Visit Us</h1>
+  <p style="color:#7a7a6e;margin-bottom:28px;">Find us, drop in, and enjoy a meal.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:28px;align-items:start;">
+    <div style="background:#fff;border-radius:12px;padding:24px;box-shadow:0 4px 16px rgba(0,0,0,.06);">
+      <h2 style="font-family:'Markazi Text',serif;color:#3d5a4f;margin-top:0;">{{ info.name }}</h2>
+
+      <p style="color:#444;line-height:1.6;">
+        <strong>📍 Address</strong><br>
+        {{ info.address }}
+      </p>
+
+      <p style="color:#444;line-height:1.6;">
+        <strong>📞 Phone</strong><br>
+        <a href="tel:{{ info.phone }}" style="color:#c0392b;text-decoration:none;">{{ info.phone }}</a>
+      </p>
+
+      <p style="color:#444;line-height:1.6;">
+        <strong>✉️ Email</strong><br>
+        <a href="mailto:{{ info.email }}" style="color:#c0392b;text-decoration:none;">{{ info.email }}</a>
+      </p>
+
+      <h3 style="font-family:'Markazi Text',serif;color:#3d5a4f;margin-top:24px;margin-bottom:8px;">🕒 Opening Hours</h3>
+      <table style="width:100%;border-collapse:collapse;">
+        {% for day, hours in info.hours %}
+          <tr style="border-bottom:1px solid #ece9e4;">
+            <td style="padding:8px 0;color:#444;">{{ day }}</td>
+            <td style="padding:8px 0;color:#7a7a6e;text-align:right;">{{ hours }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+      <a href="{% url 'book' %}"
+         style="display:inline-block;margin-top:20px;padding:11px 22px;background:#3d5a4f;color:#fff;text-decoration:none;border-radius:6px;font-weight:600;">
+        Book a Table
+      </a>
+    </div>
+
+    <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06);min-height:480px;">
+      <iframe
+        src="{{ info.map_embed_url }}"
+        width="100%" height="480" style="border:0;"
+        allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Little Lemon location on Google Maps">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (max-width: 720px) {
+    section[style*="grid"] > div[style*="grid-template-columns"] { display: block !important; }
+    section [style*="grid"] > div { margin-bottom: 20px; }
+  }
+</style>
+{% endblock %}

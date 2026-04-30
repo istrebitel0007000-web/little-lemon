@@ -43,6 +43,17 @@ Open http://127.0.0.1:8000/.
 | `/api/bookings/<id>/`      | GET/PUT/DEL | Booking detail             |
 | `/api/register/`           | POST        | Register a new user        |
 
+## Google OAuth setup
+
+1. Go to <https://console.cloud.google.com/apis/credentials> and create an **OAuth 2.0 Client ID** (type: **Web application**).
+2. **Authorized redirect URI** (dev): `http://127.0.0.1:8000/accounts/google/login/callback/`
+3. Put the resulting client ID and secret into `.env`:
+   ```
+   GOOGLE_OAUTH_CLIENT_ID=xxx.apps.googleusercontent.com
+   GOOGLE_OAUTH_CLIENT_SECRET=xxx
+   ```
+4. Restart `runserver`. The "Continue with Google" button on `/login/` and `/register/` will now work.
+
 ## Building an APK
 
 The site ships as a PWA (manifest + service worker). To package it as an Android APK:
