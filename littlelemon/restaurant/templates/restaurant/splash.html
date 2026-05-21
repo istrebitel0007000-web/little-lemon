@@ -1,0 +1,503 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Little Lemon — Welcome</title>
+
+  {# PWA manifest — already in your project #}
+  <link rel="manifest" href="{% static 'restaurant/manifest.json' %}" />
+
+  <style>
+    /* ── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ── Page shell ─────────────────────────────────────── */
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #FDFCF0;
+      font-family: 'Georgia', serif;
+    }
+
+    /* ── Splash container ───────────────────────────────── */
+    #splash {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #FDFCF0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Logo card (lemon + text side by side) ──────────── */
+    #logo-card {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 40px 52px;
+      border: 1px solid #EDE9D0;
+      border-radius: 20px;
+      background: #FDFCF0;
+      opacity: 0;
+      transform: scale(0.85);
+    }
+
+    /* ── Lemon slice (left side) ────────────────────────── */
+    #lemon-side {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      flex-shrink: 0;
+    }
+
+    #lemon-circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: #F9E547;
+      position: absolute;
+      top: 0; left: 0;
+      transform: scale(0);
+    }
+
+    #lemon-inner {
+      position: absolute;
+      top: 5px; left: 5px;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      border: 1px solid #E8C832;
+      opacity: 0;
+    }
+
+    #lemon-lines {
+      position: absolute;
+      top: 0; left: 0;
+      width: 150px; height: 150px;
+      opacity: 0;
+    }
+
+    #lemon-center {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #F9E547;
+      border: 1px solid #E8C832;
+      transform: translate(-50%, -50%) scale(0);
+    }
+
+    #lemon-pip {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 11px; height: 17px;
+      background: #DDB800;
+      border-radius: 50%;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+    }
+
+    #lemon-leaf {
+      position: absolute;
+      top: 5px; left: 67px;
+      width: 22px; height: 15px;
+      background: #6DAE3A;
+      border-radius: 50% 80% 50% 20%;
+      transform: rotate(-20deg) scale(0);
+      transform-origin: bottom center;
+    }
+
+    /* ── Text (right side) ──────────────────────────────── */
+    #text-side {
+      padding-left: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      clip-path: inset(0 100% 0 0);
+    }
+
+    #text-little {
+      font-family: sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 6px;
+      color: #2C7A3E;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    #text-lemon {
+      font-family: 'Georgia', serif;
+      font-size: 52px;
+      color: #1A1A1A;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    #text-divider {
+      width: 0;
+      height: 1.5px;
+      background: #E8C832;
+      margin: 10px 0;
+      transition: none;
+    }
+
+    #text-restaurant {
+      font-family: sans-serif;
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: #999;
+      text-transform: uppercase;
+      opacity: 0;
+    }
+
+    /* ── Tagline below card ──────────────────────────────── */
+    #tagline {
+      margin-top: 28px;
+      font-family: sans-serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #bbb;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    /* ── Enter button ────────────────────────────────────── */
+    #enter-btn {
+      margin-top: 28px;
+      padding: 13px 48px;
+      border: 1.5px solid #1A1A1A;
+      background: transparent;
+      font-family: sans-serif;
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: #1A1A1A;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: background 0.3s, color 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+    #enter-btn:hover {
+      background: #1A1A1A;
+      color: #FDFCF0;
+    }
+
+    /* ── Ripple ring ─────────────────────────────────────── */
+    #ripple-ring {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 2px solid #F9E547;
+      opacity: 0;
+      pointer-events: none;
+      /* positioned by JS relative to lemon center */
+    }
+
+    /* ── Juice drop particles ────────────────────────────── */
+    .juice-drop {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    /* ── Responsive: narrow phones ───────────────────────── */
+    @media (max-width: 480px) {
+      #logo-card {
+        flex-direction: column;
+        padding: 32px 28px;
+        gap: 20px;
+      }
+      #text-side {
+        padding-left: 0;
+        align-items: center;
+        clip-path: inset(0 100% 0 0);
+      }
+      #text-lemon { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="splash">
+
+  <div id="ripple-ring"></div>
+
+  <div id="logo-card">
+
+    <!-- Lemon slice (logo 2 — modern minimal) -->
+    <div id="lemon-side">
+      <div id="lemon-circle"></div>
+      <div id="lemon-inner"></div>
+
+      <svg id="lemon-lines" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <line x1="75" y1="9"  x2="75"  y2="141" stroke="#E8C832" stroke-width="1"/>
+        <line x1="9"  y1="75" x2="141" y2="75"  stroke="#E8C832" stroke-width="1"/>
+        <line x1="30" y1="30" x2="120" y2="120" stroke="#E8C832" stroke-width="1"/>
+        <line x1="120" y1="30" x2="30" y2="120" stroke="#E8C832" stroke-width="1"/>
+      </svg>
+
+      <div id="lemon-center"></div>
+      <div id="lemon-pip"></div>
+      <div id="lemon-leaf"></div>
+    </div>
+
+    <!-- Text block -->
+    <div id="text-side">
+      <div id="text-little">Little</div>
+      <div id="text-lemon">Lemon</div>
+      <div id="text-divider"></div>
+      <div id="text-restaurant">Restaurant</div>
+    </div>
+
+  </div><!-- /#logo-card -->
+
+  <p id="tagline">Fresh &middot; Local &middot; Mediterranean</p>
+
+  <!--
+    href points to your existing home page.
+    Your project's restaurant/urls.py has name='home'.
+    Django url tag renders the correct path.
+  -->
+  <a id="enter-btn" href="{% url 'home' %}">Enter</a>
+
+</div><!-- /#splash -->
+
+<script>
+  /* ── Utility ──────────────────────────────────────────── */
+  const $ = id => document.getElementById(id);
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  function animEl(el, keyframes, opts) {
+    return el.animate(keyframes, { fill: 'forwards', ...opts }).finished;
+  }
+
+  /* ── Juice-drop particle burst ─────────────────────────── */
+  function spawnDrops() {
+    const splash   = $('splash');
+    const lemonEl  = $('lemon-side');
+    const sr       = splash.getBoundingClientRect();
+    const lr       = lemonEl.getBoundingClientRect();
+
+    /* centre of lemon relative to splash */
+    const cx = lr.left - sr.left + lr.width  / 2;
+    const cy = lr.top  - sr.top  + lr.height / 2;
+
+    const colors = ['#F9E547', '#E8C832', '#F0D820', '#6DAE3A', '#5A9A30'];
+
+    /* remove old drops from previous replay */
+    splash.querySelectorAll('.juice-drop').forEach(d => d.remove());
+
+    for (let i = 0; i < 16; i++) {
+      const drop = document.createElement('div');
+      drop.className = 'juice-drop';
+
+      const size  = 5 + Math.random() * 7;
+      const angle = (Math.PI * 2 * i / 16) + (Math.random() - 0.5) * 0.5;
+      const dist  = 80 + Math.random() * 90;
+      const tx    = Math.cos(angle) * dist;
+      const ty    = Math.sin(angle) * dist;
+
+      drop.style.cssText =
+        `width:${size}px; height:${size}px;` +
+        `background:${colors[i % colors.length]};` +
+        `left:${cx}px; top:${cy}px; position:absolute;`;
+
+      splash.appendChild(drop);
+
+      drop.animate([
+        { opacity: 0.9, transform: 'translate(-50%,-50%) scale(1)' },
+        { opacity: 0,   transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0.1)` }
+      ], { duration: 650 + Math.random() * 300, easing: 'cubic-bezier(0,0,0.3,1)', fill: 'forwards' });
+    }
+  }
+
+  /* ── Position ripple ring over lemon ───────────────────── */
+  function positionRipple() {
+    const splash  = $('splash');
+    const lemonEl = $('lemon-side');
+    const ripple  = $('ripple-ring');
+    const sr      = splash.getBoundingClientRect();
+    const lr      = lemonEl.getBoundingClientRect();
+    const cx      = lr.left - sr.left + lr.width  / 2;
+    const cy      = lr.top  - sr.top  + lr.height / 2;
+
+    ripple.style.left = (cx - 75) + 'px';
+    ripple.style.top  = (cy - 75) + 'px';
+    ripple.style.position = 'absolute';
+  }
+
+  /* ── Main animation sequence ───────────────────────────── */
+  async function runSplash() {
+    /* — reset everything — */
+    const card       = $('logo-card');
+    const lCircle    = $('lemon-circle');
+    const lInner     = $('lemon-inner');
+    const lLines     = $('lemon-lines');
+    const lCenter    = $('lemon-center');
+    const lPip       = $('lemon-pip');
+    const lLeaf      = $('lemon-leaf');
+    const textSide   = $('text-side');
+    const divider    = $('text-divider');
+    const restaurant = $('text-restaurant');
+    const tagline    = $('tagline');
+    const enterBtn   = $('enter-btn');
+    const ripple     = $('ripple-ring');
+
+    card.style.cssText      += '; opacity:0; transform:scale(0.85)';
+    lCircle.style.transform  = 'scale(0)';
+    lInner.style.opacity     = '0';
+    lLines.style.opacity     = '0';
+    lCenter.style.transform  = 'translate(-50%,-50%) scale(0)';
+    lPip.style.opacity       = '0';
+    lLeaf.style.transform    = 'rotate(-20deg) scale(0)';
+    textSide.style.clipPath  = 'inset(0 100% 0 0)';
+    divider.style.width      = '0';
+    restaurant.style.opacity = '0';
+    tagline.style.opacity    = '0';
+    tagline.style.transform  = 'translateY(8px)';
+    enterBtn.style.opacity   = '0';
+    enterBtn.style.transform = 'translateY(8px)';
+    ripple.style.opacity     = '0';
+    ripple.style.transform   = 'scale(1)';
+
+    await sleep(250);
+
+    /* 1. Card fades in */
+    await animEl(card, [
+      { opacity: 0, transform: 'scale(0.85)' },
+      { opacity: 1, transform: 'scale(1)'    }
+    ], { duration: 480, easing: 'cubic-bezier(0.22,1,0.36,1)' });
+    card.style.opacity   = '1';
+    card.style.transform = 'scale(1)';
+
+    positionRipple();
+
+    await sleep(150);
+
+    /* 2. Lemon circle bounces in */
+    lCircle.animate([
+      { transform: 'scale(0)'    },
+      { transform: 'scale(1.08)' },
+      { transform: 'scale(0.96)' },
+      { transform: 'scale(1)'    }
+    ], { duration: 680, easing: 'cubic-bezier(0.34,1.56,0.64,1)', fill: 'forwards' });
+    lCircle.style.transform = 'scale(1)';
+
+    await sleep(360);
+
+    /* 3. Inner ring + slice lines appear */
+    lInner.animate([{ opacity: 0 },{ opacity: 1 }],
+      { duration: 300, fill: 'forwards' });
+    lLines.animate([{ opacity: 0 },{ opacity: 1 }],
+      { duration: 380, fill: 'forwards' });
+    lInner.style.opacity = '1';
+    lLines.style.opacity = '1';
+
+    await sleep(220);
+
+    /* 4. Centre pip pops */
+    lCenter.animate([
+      { transform: 'translate(-50%,-50%) scale(0)'    },
+      { transform: 'translate(-50%,-50%) scale(1.2)'  },
+      { transform: 'translate(-50%,-50%) scale(1)'    }
+    ], { duration: 380, easing: 'cubic-bezier(0.34,1.56,0.64,1)', fill: 'forwards' });
+    lCenter.style.transform = 'translate(-50%,-50%) scale(1)';
+
+    lPip.animate([{ opacity: 0 },{ opacity: 0.55 }],
+      { duration: 280, fill: 'forwards' });
+    lPip.style.opacity = '0.55';
+
+    await sleep(140);
+
+    /* 5. Leaf pops */
+    lLeaf.animate([
+      { transform: 'rotate(-20deg) scale(0)'   },
+      { transform: 'rotate(-20deg) scale(1.25)'},
+      { transform: 'rotate(-20deg) scale(1)'   }
+    ], { duration: 380, easing: 'cubic-bezier(0.34,1.56,0.64,1)', fill: 'forwards' });
+    lLeaf.style.transform = 'rotate(-20deg) scale(1)';
+
+    await sleep(100);
+
+    /* 6. Juice burst + ripple simultaneously */
+    spawnDrops();
+
+    ripple.animate([
+      { opacity: 0.9, transform: 'scale(1)'   },
+      { opacity: 0,   transform: 'scale(2.4)' }
+    ], { duration: 700, easing: 'ease-out', fill: 'forwards' });
+
+    await sleep(350);
+
+    /* 7. Text slides in from right */
+    textSide.animate([
+      { clipPath: 'inset(0 100% 0 0)' },
+      { clipPath: 'inset(0 0%   0 0)' }
+    ], { duration: 580, easing: 'cubic-bezier(0.22,1,0.36,1)', fill: 'forwards' });
+    textSide.style.clipPath = 'inset(0 0% 0 0)';
+
+    await sleep(320);
+
+    /* 8. Gold divider draws itself */
+    divider.animate([
+      { width: '0px'   },
+      { width: '130px' }
+    ], { duration: 440, easing: 'cubic-bezier(0.22,1,0.36,1)', fill: 'forwards' });
+    divider.style.width = '130px';
+
+    await sleep(200);
+
+    /* 9. "Restaurant" label fades */
+    restaurant.animate([{ opacity: 0 },{ opacity: 1 }],
+      { duration: 380, fill: 'forwards' });
+    restaurant.style.opacity = '1';
+
+    await sleep(380);
+
+    /* 10. Tagline drifts up */
+    tagline.animate([
+      { opacity: 0, transform: 'translateY(8px)' },
+      { opacity: 1, transform: 'translateY(0)'   }
+    ], { duration: 400, easing: 'ease-out', fill: 'forwards' });
+    tagline.style.opacity   = '1';
+    tagline.style.transform = 'translateY(0)';
+
+    await sleep(200);
+
+    /* 11. Enter button rises */
+    enterBtn.animate([
+      { opacity: 0, transform: 'translateY(8px)' },
+      { opacity: 1, transform: 'translateY(0)'   }
+    ], { duration: 400, easing: 'ease-out', fill: 'forwards' });
+    enterBtn.style.opacity   = '1';
+    enterBtn.style.transform = 'translateY(0)';
+  }
+
+  /* ── Run on page load ──────────────────────────────────── */
+  runSplash();
+
+  /*
+   * ── Auto-redirect after 5 s if user doesn't click ──────
+   * Uses the same URL as the Enter button so no hardcoding.
+   * Remove the next 3 lines if you prefer manual click only.
+   */
+  setTimeout(() => {
+    const btn = $('enter-btn');
+    if (btn) window.location.href = btn.href;
+  }, 5000);
+</script>
+
+</body>
+</html>

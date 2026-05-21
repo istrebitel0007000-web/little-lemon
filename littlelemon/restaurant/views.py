@@ -115,3 +115,6 @@ def _send_booking_confirmation(request, booking):
         )
     except Exception:
         pass
+ 
+def splash(request): 
+    return render(request, 'restaurant/splash.html') 
