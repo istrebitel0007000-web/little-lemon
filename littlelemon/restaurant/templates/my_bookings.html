@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}My Bookings — Little Lemon{% endblock %}
+{% block content %}
+<div class="container my-4">
+  <h2>My Bookings</h2>
+  <a href="{% url 'book' %}" class="btn btn-warning mb-3">+ New Booking</a>
+
+  {% if bookings %}
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr><th>Name</th><th>Guests</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+        <tr>
+          <td>{{ b.first_name }} {{ b.last_name }}</td>
+          <td>{{ b.guest_number }}</td>
+          <td>{{ b.date|default:"—" }}</td>
+          <td>{{ b.time|default:"—" }}</td>
+          <td>
+            <span class="badge
+              {% if b.status == 'confirmed' %}bg-success
+              {% elif b.status == 'cancelled' %}bg-danger
+              {% else %}bg-secondary{% endif %}">
+              {{ b.get_status_display }}
+            </span>
+          </td>
+          <td class="d-flex gap-1">
+            {% if b.status != 'cancelled' %}
+              <a href="{% url 'booking_edit' b.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+              <form method="post" action="{% url 'booking_cancel' b.pk %}">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-danger"
+                  onclick="return confirm('Cancel this booking?')">Cancel</button>
+              </form>
+            {% else %}
+              <span class="text-muted small">—</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="alert alert-info">No bookings yet. <a href="{% url 'book' %}">Make one!</a></div>
+  {% endif %}
+</div>
+{% endblock %}

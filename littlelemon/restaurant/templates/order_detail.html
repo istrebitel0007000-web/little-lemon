@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Order #{{ order.pk }} — Little Lemon{% endblock %}
+{% block content %}
+<div class="container my-4">
+  <h2>Order #{{ order.pk }}</h2>
+  <p class="text-muted">Placed on {{ order.created_at|date:"d M Y H:i" }}</p>
+
+  <!-- Live status tracker -->
+  <div class="card p-4 mb-4">
+    <h5>Order Status: <span id="status-label" class="badge bg-warning text-dark">{{ order.get_status_display }}</span></h5>
+    <div class="d-flex justify-content-between mt-3">
+      {% for step in "pending,confirmed,preparing,ready,delivered"|split:"," %}
+      <div class="text-center flex-fill" id="step-{{ step }}">
+        <div class="rounded-circle border border-2 d-inline-flex align-items-center justify-content-center"
+             style="width:40px;height:40px;" id="circle-{{ step }}">
+          {% if step == "pending" %}🕐
+          {% elif step == "confirmed" %}✅
+          {% elif step == "preparing" %}👨‍🍳
+          {% elif step == "ready" %}🍽️
+          {% elif step == "delivered" %}🎉{% endif %}
+        </div>
+        <div class="small mt-1">{{ step|title }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Items -->
+  <h5>Items</h5>
+  <table class="table table-sm table-bordered">
+    <thead class="table-light">
+      <tr><th>Item</th><th>Qty</th><th>Subtotal</th></tr>
+    </thead>
+    <tbody>
+      {% for item in order.items.all %}
+      <tr>
+        <td>{{ item.menu_item.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>RM {{ item.subtotal }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2"><strong>Total</strong></td>
+        <td><strong>RM {{ order.total }}</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  {% if order.notes %}
+  <p><strong>Notes:</strong> {{ order.notes }}</p>
+  {% endif %}
+
+  <a href="{% url 'order_list' %}" class="btn btn-outline-secondary mt-2">← Back to Orders</a>
+</div>
+
+<script>
+  const ORDER_STATUS_URL = "{% url 'order_status_json' order.pk %}";
+  const STEPS = ['pending','confirmed','preparing','ready','delivered'];
+
+  function highlightStep(status) {
+    const idx = STEPS.indexOf(status);
+    STEPS.forEach((s, i) => {
+      const circle = document.getElementById('circle-' + s);
+      if (!circle) return;
+      if (i <= idx) {
+        circle.style.background = '#F9E547';
+        circle.style.borderColor = '#E8C832';
+      } else {
+        circle.style.background = '';
+        circle.style.borderColor = '';
+      }
+    });
+    const label = document.getElementById('status-label');
+    if (label) label.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+  }
+
+  // Initial highlight
+  highlightStep("{{ order.status }}");
+
+  // Poll every 15 seconds for live updates
+  {% if order.status != 'delivered' and order.status != 'cancelled' %}
+  setInterval(() => {
+    fetch(ORDER_STATUS_URL)
+      .then(r => r.json())
+      .then(data => highlightStep(data.status))
+      .catch(() => {});
+  }, 15000);
+  {% endif %}
+</script>
+{% endblock %}

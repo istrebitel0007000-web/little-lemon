@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Checkout — Little Lemon{% endblock %}
+{% block content %}
+<div class="container my-4">
+  <h2>Checkout</h2>
+
+  <div class="row g-4">
+    <!-- Order summary -->
+    <div class="col-md-7">
+      <h5>Order Summary</h5>
+      <table class="table table-sm table-bordered">
+        <thead class="table-light">
+          <tr><th>Item</th><th>Qty</th><th>Subtotal</th></tr>
+        </thead>
+        <tbody>
+          {% for ci in cart.cart_items.all %}
+          <tr>
+            <td>{{ ci.menu_item.name }}</td>
+            <td>{{ ci.quantity }}</td>
+            <td>RM {{ ci.subtotal }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <p>Subtotal: <strong>RM {{ total }}</strong></p>
+      {% if coupon %}
+        <p class="text-success">Coupon ({{ coupon.code }}): −RM {{ discount|floatformat:2 }}</p>
+      {% endif %}
+      <p class="fs-5">Total: <strong>RM {{ final_total }}</strong></p>
+
+      <!-- Checkout form -->
+      <form method="post" action="{% url 'checkout' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Special notes</label>
+          {{ checkout_form.notes }}
+        </div>
+        <button type="submit" class="btn btn-warning fw-bold w-100">Place Order</button>
+      </form>
+    </div>
+
+    <!-- Coupon + Loyalty -->
+    <div class="col-md-5">
+      <div class="card p-3 mb-3">
+        <h6>🎟️ Have a coupon?</h6>
+        <form method="post" action="{% url 'apply_coupon' %}" class="d-flex gap-2">
+          {% csrf_token %}
+          {{ coupon_form.code }}
+          <button class="btn btn-outline-primary btn-sm">Apply</button>
+        </form>
+      </div>
+
+      <div class="card p-3">
+        <h6>⭐ Loyalty Points</h6>
+        <p>You have <strong>{{ loyalty.points }}</strong> points.</p>
+        <small class="text-muted">You will earn <strong>{{ final_total|floatformat:0 }}</strong> points for this order.</small>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

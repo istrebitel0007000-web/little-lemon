@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Loyalty Points — Little Lemon{% endblock %}
+{% block content %}
+<div class="container my-4">
+  <h2>⭐ Your Loyalty Points</h2>
+
+  <div class="card p-4 mt-4 text-center" style="max-width:400px;margin:auto;">
+    <div style="font-size:4rem;font-weight:700;color:#E8C832;">{{ loyalty.points }}</div>
+    <div class="text-muted">points available</div>
+    <hr>
+    <p class="mb-1">💡 Earn <strong>1 point</strong> for every <strong>RM 1</strong> you spend.</p>
+    <p class="mb-1">🎁 Redeem <strong>100 points</strong> for <strong>RM 1</strong> off your order.</p>
+    <hr>
+    <a href="{% url 'menu' %}" class="btn btn-warning fw-bold mt-2">Order Now to Earn Points</a>
+  </div>
+
+  <div class="mt-4" style="max-width:400px;margin:auto;">
+    <h6>How it works:</h6>
+    <ol>
+      <li>Add items to your cart and place an order.</li>
+      <li>Points are automatically added after checkout.</li>
+      <li>Use points at checkout for discounts.</li>
+    </ol>
+  </div>
+</div>
+{% endblock %}

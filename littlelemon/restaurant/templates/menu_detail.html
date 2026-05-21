@@ -1,11 +1,117 @@
 {% extends 'base.html' %}
+{% block title %}{{ item.name }} — Little Lemon{% endblock %}
 {% block content %}
+
 <section style="max-width:720px;margin:48px auto;padding:24px;background:#fff;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.08);">
+
   <a href="{% url 'menu' %}" style="color:#3d5a4f;text-decoration:none;">← Back to menu</a>
+
   <h1 style="font-family:'Markazi Text',serif;color:#3d5a4f;margin-top:12px;">{{ item.name }}</h1>
-  {% if item.image %}
-    <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width:100%;max-height:400px;object-fit:cover;border-radius:8px;margin:16px 0;">
+
+  {% if item.category %}
+    <span style="background:#f0f4f2;color:#3d5a4f;padding:3px 10px;border-radius:12px;font-size:.85rem;">{{ item.category }}</span>
   {% endif %}
+
+  {% if item.image %}
+    <img src="{{ item.image.url }}" alt="{{ item.name }}"
+         style="width:100%;max-height:400px;object-fit:cover;border-radius:8px;margin:16px 0;">
+  {% endif %}
+
   <p style="font-size:1.4rem;color:#c0392b;font-weight:700;">RM {{ item.price }}</p>
+
+  {% if item.description %}
+    <p style="color:#555;line-height:1.6;">{{ item.description }}</p>
+  {% endif %}
+
+  <!-- Average rating -->
+  <p style="font-size:1rem;color:#555;margin:8px 0;">
+    ⭐ <strong>{{ item.average_rating }}</strong> / 5
+    <span style="color:#999;font-size:.9rem;">({{ item.reviews.count }} review{{ item.reviews.count|pluralize }})</span>
+  </p>
+
+  <!-- Add to cart -->
+  <div style="margin:20px 0;">
+    {% if user.is_authenticated %}
+      <form method="post" action="{% url 'cart_add' item.pk %}">
+        {% csrf_token %}
+        <button type="submit"
+          style="background:#f4ce14;color:#333;border:none;padding:12px 28px;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;">
+          🛒 Add to Cart
+        </button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}?next={{ request.path }}"
+         style="display:inline-block;background:#f4ce14;color:#333;padding:12px 28px;border-radius:8px;font-size:1rem;font-weight:700;text-decoration:none;">
+        Login to Order
+      </a>
+    {% endif %}
+  </div>
 </section>
+
+<!-- Reviews -->
+<section style="max-width:720px;margin:0 auto 48px;padding:24px;background:#fff;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.08);">
+  <h2 style="font-family:'Markazi Text',serif;color:#3d5a4f;">Customer Reviews</h2>
+
+  {% if reviews %}
+    {% for review in reviews %}
+    <div style="border-bottom:1px solid #eee;padding:16px 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <strong style="color:#3d5a4f;">{{ review.user.username }}</strong>
+        <span style="color:#999;font-size:.85rem;">{{ review.created_at|date:"d M Y" }}</span>
+      </div>
+      <div style="color:#f4ce14;font-size:1.1rem;margin:4px 0;">
+        {% for i in "12345" %}
+          {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+        {% endfor %}
+      </div>
+      {% if review.comment %}
+        <p style="color:#555;margin:6px 0 0;">{{ review.comment }}</p>
+      {% endif %}
+      {% if review.user == user %}
+        <form method="post" action="{% url 'delete_review' review.pk %}" style="margin-top:8px;">
+          {% csrf_token %}
+          <button type="submit"
+            onclick="return confirm('Delete your review?')"
+            style="background:none;border:1px solid #c0392b;color:#c0392b;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:.85rem;">
+            Delete my review
+          </button>
+        </form>
+      {% endif %}
+    </div>
+    {% endfor %}
+  {% else %}
+    <p style="color:#999;">No reviews yet. Be the first!</p>
+  {% endif %}
+
+  <!-- Add review form -->
+  {% if user.is_authenticated and review_form %}
+    <div style="margin-top:24px;padding:20px;background:#f9f9f9;border-radius:8px;">
+      <h3 style="font-family:'Markazi Text',serif;color:#3d5a4f;margin-top:0;">Leave a Review</h3>
+      <form method="post" action="{% url 'add_review' item.pk %}">
+        {% csrf_token %}
+        {% for field in review_form %}
+          <div style="margin-bottom:14px;">
+            <label style="display:block;color:#333;font-weight:600;margin-bottom:4px;">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <div style="color:#c0392b;font-size:.85rem;">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit"
+          style="background:#f4ce14;color:#333;border:none;padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer;">
+          Submit Review
+        </button>
+      </form>
+    </div>
+  {% elif user_review %}
+    <p style="color:#3d5a4f;margin-top:16px;">✅ You have already reviewed this item.</p>
+  {% elif not user.is_authenticated %}
+    <p style="margin-top:16px;">
+      <a href="{% url 'login' %}?next={{ request.path }}" style="color:#3d5a4f;">Login</a> to leave a review.
+    </p>
+  {% endif %}
+
+</section>
+
 {% endblock %}

@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Book a Table — Little Lemon{% endblock %}
+
 {% block content %}
 <section>
   <article>
     <h1>Make a reservation</h1>
-    <!--Begin row-->
     <div class="row">
+
       <!--Begin col-->
       <div class="column">
         <form method="POST">
@@ -22,17 +24,15 @@
         <div class="videowrap">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d313.70439891833814!2d101.71299017770129!3d3.148059841214276!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc362c774e6c9b%3A0x77dbaaedd55aecc3!2sPavilion%20Crystal%20Fountain!5e0!3m2!1sen!2s!4v1772687579308!5m2!1sen!2s"
-            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
           </iframe>
         </div>
       </div>
       <!--End col-->
+
     </div>
     <!--End row-->
-
-
-
-
   </article>
 </section>
 {% endblock %}

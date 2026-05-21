@@ -9,8 +9,15 @@
     <li><a href="{% url 'menu' %}">Menu</a></li>
     <li><a href="{% url 'book' %}">Book</a></li>
     <li><a href="{% url 'location' %}">Location</a></li>
+
     {% if user.is_authenticated %}
-      <li><a href="{% url 'bookings_list' %}">My Bookings</a></li>
+      <li><a href="{% url 'cart' %}">🛒 Cart{% if user.cart.item_count %} ({{ user.cart.item_count }}){% endif %}</a></li>
+      <li><a href="{% url 'order_list' %}">My Orders</a></li>
+      <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+      <li><a href="{% url 'loyalty' %}">⭐ Points</a></li>
+      {% if user.is_staff %}
+        <li><a href="{% url 'admin_bookings' %}">📋 Admin</a></li>
+      {% endif %}
       <li>
         <form action="{% url 'logout' %}" method="post" style="display:inline;">
           {% csrf_token %}
