@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,56 +11,45 @@
 
     <!-- PWA -->
     <link rel="manifest" href="{% static 'manifest.webmanifest' %}" />
-    <meta name="theme-color" content="#3d5a4f" />
+    <meta name="theme-color" content="#0f0f0f" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="apple-mobile-web-app-title" content="Little Lemon" />
     <link rel="apple-touch-icon" href="{% static 'img/icon-192.png' %}" />
 
-    <!-- Load favicon -->
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="{% static 'img/favicon.ico' %}"
-    />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}" />
 
-    <!-- Include your CSS files here -->
-    <link
-      rel="preload"
-      as="style"
-      href="{% static 'css/style.css' %}"
-      onload="this.rel = 'stylesheet'"
-    />
-
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Karla&family=Markazi+Text:wght@500&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&family=Markazi+Text:wght@400;500&display=swap" rel="stylesheet" />
+
+    <!-- Main CSS — loaded normally (not preload) so dark theme applies immediately -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
 
   <body>
-    <!--Header content-->
+    <!-- Header & Nav -->
     {% include 'partials/_header.html' %}
 
+    <!-- Django messages -->
     {% if messages %}
-      <ul class="messages" style="list-style:none; padding:12px 24px; margin:0;">
+      <ul class="messages">
         {% for message in messages %}
-          <li class="msg msg-{{ message.tags }}"
-              style="background:#e8f5e9; color:#2e7d32; padding:10px 16px; border-radius:6px; margin:8px 0;">
-            {{ message }}
-          </li>
+          <li class="msg msg-{{ message.tags }}">{{ message }}</li>
         {% endfor %}
       </ul>
     {% endif %}
 
-    <main>{% block content %} {% endblock %}</main>
+    <!-- Page content -->
+    <main>{% block content %}{% endblock %}</main>
 
-    <!--Footer content-->
+    <!-- Footer -->
     {% include 'partials/_footer.html' %}
 
+    <!-- PWA service worker -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
