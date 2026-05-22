@@ -1,40 +1,57 @@
 {% extends "base.html" %}
 {% block title %}My Bookings — Little Lemon{% endblock %}
 {% block content %}
-<div class="container my-4">
-  <h2>My Bookings</h2>
-  <a href="{% url 'book' %}" class="btn btn-warning mb-3">+ New Booking</a>
+<section style="max-width:900px;margin:40px auto;padding:0 20px;">
+  <h1 style="font-family:'Markazi Text',serif;color:#3d5a4f;">My Bookings</h1>
+
+  <a href="{% url 'book' %}"
+     style="display:inline-block;margin-bottom:20px;padding:10px 24px;
+            background:#f4ce14;color:#333;border-radius:8px;font-weight:700;text-decoration:none;">
+    + New Booking
+  </a>
 
   {% if bookings %}
-    <table class="table table-hover">
-      <thead class="table-light">
-        <tr><th>Name</th><th>Guests</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr>
+    <table style="width:100%;border-collapse:collapse;">
+      <thead style="background:#f5f5f5;">
+        <tr>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">Name</th>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">Guests</th>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">Date</th>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">Time</th>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">Status</th>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">Actions</th>
+        </tr>
       </thead>
       <tbody>
         {% for b in bookings %}
         <tr>
-          <td>{{ b.first_name }} {{ b.last_name }}</td>
-          <td>{{ b.guest_number }}</td>
-          <td>{{ b.date|default:"—" }}</td>
-          <td>{{ b.time|default:"—" }}</td>
-          <td>
-            <span class="badge
-              {% if b.status == 'confirmed' %}bg-success
-              {% elif b.status == 'cancelled' %}bg-danger
-              {% else %}bg-secondary{% endif %}">
+          <td style="padding:10px;border:1px solid #ddd;">{{ b.first_name }} {{ b.last_name }}</td>
+          <td style="padding:10px;border:1px solid #ddd;">{{ b.guest_number }}</td>
+          <td style="padding:10px;border:1px solid #ddd;">{{ b.date|default:"—" }}</td>
+          <td style="padding:10px;border:1px solid #ddd;">{{ b.time|default:"—" }}</td>
+          <td style="padding:10px;border:1px solid #ddd;">
+            <span style="padding:3px 10px;border-radius:12px;font-size:.85rem;color:#fff;
+              background:{% if b.status == 'confirmed' %}#27ae60{% elif b.status == 'cancelled' %}#e74c3c{% else %}#95a5a6{% endif %};">
               {{ b.get_status_display }}
             </span>
           </td>
-          <td class="d-flex gap-1">
+          <td style="padding:10px;border:1px solid #ddd;">
             {% if b.status != 'cancelled' %}
-              <a href="{% url 'booking_edit' b.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
-              <form method="post" action="{% url 'booking_cancel' b.pk %}">
+              <a href="{% url 'booking_edit' b.pk %}"
+                 style="margin-right:8px;color:#3d5a4f;font-weight:600;text-decoration:none;">
+                Edit
+              </a>
+              <form method="post" action="{% url 'booking_cancel' b.pk %}" style="display:inline;">
                 {% csrf_token %}
-                <button class="btn btn-sm btn-outline-danger"
-                  onclick="return confirm('Cancel this booking?')">Cancel</button>
+                <button type="submit"
+                  onclick="return confirm('Cancel this booking?')"
+                  style="background:none;border:1px solid #e74c3c;color:#e74c3c;
+                         padding:3px 10px;border-radius:6px;cursor:pointer;font-size:.85rem;">
+                  Cancel
+                </button>
               </form>
             {% else %}
-              <span class="text-muted small">—</span>
+              <span style="color:#999;font-size:.85rem;">—</span>
             {% endif %}
           </td>
         </tr>
@@ -42,7 +59,9 @@
       </tbody>
     </table>
   {% else %}
-    <div class="alert alert-info">No bookings yet. <a href="{% url 'book' %}">Make one!</a></div>
+    <div style="background:#e8f5e9;padding:16px;border-radius:8px;">
+      No bookings yet. <a href="{% url 'book' %}" style="color:#3d5a4f;">Make one!</a>
+    </div>
   {% endif %}
-</div>
+</section>
 {% endblock %}

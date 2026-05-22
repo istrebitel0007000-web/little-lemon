@@ -11,7 +11,14 @@
     <li><a href="{% url 'location' %}">Location</a></li>
 
     {% if user.is_authenticated %}
-      <li><a href="{% url 'cart' %}">🛒 Cart{% if user.cart.item_count %} ({{ user.cart.item_count }}){% endif %}</a></li>
+      {# cart count — safely handled: if no cart exists yet, shows 0 #}
+      <li>
+        <a href="{% url 'cart' %}">🛒 Cart
+          {% with count=user.cart.item_count %}
+            {% if count %}({{ count }}){% endif %}
+          {% endwith %}
+        </a>
+      </li>
       <li><a href="{% url 'order_list' %}">My Orders</a></li>
       <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
       <li><a href="{% url 'loyalty' %}">⭐ Points</a></li>
@@ -21,7 +28,9 @@
       <li>
         <form action="{% url 'logout' %}" method="post" style="display:inline;">
           {% csrf_token %}
-          <button type="submit" style="background:none;border:none;color:inherit;cursor:pointer;font:inherit;padding:0;">Logout</button>
+          <button type="submit" style="background:none;border:none;color:inherit;cursor:pointer;font:inherit;padding:0;">
+            Logout
+          </button>
         </form>
       </li>
     {% else %}

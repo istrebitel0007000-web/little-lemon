@@ -3,47 +3,64 @@
 {% block content %}
 <div class="container my-4">
   <h2>Order #{{ order.pk }}</h2>
-  <p class="text-muted">Placed on {{ order.created_at|date:"d M Y H:i" }}</p>
+  <p style="color:#999;">Placed on {{ order.created_at|date:"d M Y H:i" }}</p>
 
   <!-- Live status tracker -->
-  <div class="card p-4 mb-4">
-    <h5>Order Status: <span id="status-label" class="badge bg-warning text-dark">{{ order.get_status_display }}</span></h5>
-    <div class="d-flex justify-content-between mt-3">
-      {% for step in "pending,confirmed,preparing,ready,delivered"|split:"," %}
-      <div class="text-center flex-fill" id="step-{{ step }}">
-        <div class="rounded-circle border border-2 d-inline-flex align-items-center justify-content-center"
-             style="width:40px;height:40px;" id="circle-{{ step }}">
-          {% if step == "pending" %}🕐
-          {% elif step == "confirmed" %}✅
-          {% elif step == "preparing" %}👨‍🍳
-          {% elif step == "ready" %}🍽️
-          {% elif step == "delivered" %}🎉{% endif %}
-        </div>
-        <div class="small mt-1">{{ step|title }}</div>
+  <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:24px;margin-bottom:24px;">
+    <h5>Order Status: <span id="status-label" style="background:#f4ce14;padding:4px 12px;border-radius:12px;font-size:.9rem;">{{ order.get_status_display }}</span></h5>
+    <div style="display:flex;justify-content:space-between;margin-top:20px;">
+
+      <div class="step-item" id="step-pending" style="text-align:center;flex:1;">
+        <div id="circle-pending" style="width:44px;height:44px;border-radius:50%;border:2px solid #ccc;display:inline-flex;align-items:center;justify-content:center;font-size:1.2rem;">🕐</div>
+        <div style="font-size:.8rem;margin-top:4px;">Pending</div>
       </div>
-      {% endfor %}
+
+      <div class="step-item" id="step-confirmed" style="text-align:center;flex:1;">
+        <div id="circle-confirmed" style="width:44px;height:44px;border-radius:50%;border:2px solid #ccc;display:inline-flex;align-items:center;justify-content:center;font-size:1.2rem;">✅</div>
+        <div style="font-size:.8rem;margin-top:4px;">Confirmed</div>
+      </div>
+
+      <div class="step-item" id="step-preparing" style="text-align:center;flex:1;">
+        <div id="circle-preparing" style="width:44px;height:44px;border-radius:50%;border:2px solid #ccc;display:inline-flex;align-items:center;justify-content:center;font-size:1.2rem;">👨‍🍳</div>
+        <div style="font-size:.8rem;margin-top:4px;">Preparing</div>
+      </div>
+
+      <div class="step-item" id="step-ready" style="text-align:center;flex:1;">
+        <div id="circle-ready" style="width:44px;height:44px;border-radius:50%;border:2px solid #ccc;display:inline-flex;align-items:center;justify-content:center;font-size:1.2rem;">🍽️</div>
+        <div style="font-size:.8rem;margin-top:4px;">Ready</div>
+      </div>
+
+      <div class="step-item" id="step-delivered" style="text-align:center;flex:1;">
+        <div id="circle-delivered" style="width:44px;height:44px;border-radius:50%;border:2px solid #ccc;display:inline-flex;align-items:center;justify-content:center;font-size:1.2rem;">🎉</div>
+        <div style="font-size:.8rem;margin-top:4px;">Delivered</div>
+      </div>
+
     </div>
   </div>
 
-  <!-- Items -->
+  <!-- Items table -->
   <h5>Items</h5>
-  <table class="table table-sm table-bordered">
-    <thead class="table-light">
-      <tr><th>Item</th><th>Qty</th><th>Subtotal</th></tr>
+  <table style="width:100%;border-collapse:collapse;margin-bottom:16px;">
+    <thead style="background:#f5f5f5;">
+      <tr>
+        <th style="padding:8px;border:1px solid #ddd;text-align:left;">Item</th>
+        <th style="padding:8px;border:1px solid #ddd;text-align:left;">Qty</th>
+        <th style="padding:8px;border:1px solid #ddd;text-align:left;">Subtotal</th>
+      </tr>
     </thead>
     <tbody>
       {% for item in order.items.all %}
       <tr>
-        <td>{{ item.menu_item.name }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>RM {{ item.subtotal }}</td>
+        <td style="padding:8px;border:1px solid #ddd;">{{ item.menu_item.name }}</td>
+        <td style="padding:8px;border:1px solid #ddd;">{{ item.quantity }}</td>
+        <td style="padding:8px;border:1px solid #ddd;">RM {{ item.subtotal }}</td>
       </tr>
       {% endfor %}
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="2"><strong>Total</strong></td>
-        <td><strong>RM {{ order.total }}</strong></td>
+        <td colspan="2" style="padding:8px;border:1px solid #ddd;"><strong>Total</strong></td>
+        <td style="padding:8px;border:1px solid #ddd;"><strong>RM {{ order.total }}</strong></td>
       </tr>
     </tfoot>
   </table>
@@ -52,40 +69,40 @@
   <p><strong>Notes:</strong> {{ order.notes }}</p>
   {% endif %}
 
-  <a href="{% url 'order_list' %}" class="btn btn-outline-secondary mt-2">← Back to Orders</a>
+  <a href="{% url 'order_list' %}" style="display:inline-block;margin-top:12px;padding:10px 20px;border:1px solid #333;border-radius:6px;text-decoration:none;color:#333;">← Back to Orders</a>
 </div>
 
 <script>
-  const ORDER_STATUS_URL = "{% url 'order_status_json' order.pk %}";
-  const STEPS = ['pending','confirmed','preparing','ready','delivered'];
+  var ORDER_STATUS_URL = "{% url 'order_status_json' order.pk %}";
+  var STEPS = ['pending', 'confirmed', 'preparing', 'ready', 'delivered'];
 
   function highlightStep(status) {
-    const idx = STEPS.indexOf(status);
-    STEPS.forEach((s, i) => {
-      const circle = document.getElementById('circle-' + s);
-      if (!circle) return;
+    var idx = STEPS.indexOf(status);
+    for (var i = 0; i < STEPS.length; i++) {
+      var circle = document.getElementById('circle-' + STEPS[i]);
+      if (!circle) continue;
       if (i <= idx) {
         circle.style.background = '#F9E547';
         circle.style.borderColor = '#E8C832';
       } else {
-        circle.style.background = '';
-        circle.style.borderColor = '';
+        circle.style.background = '#fff';
+        circle.style.borderColor = '#ccc';
       }
-    });
-    const label = document.getElementById('status-label');
+    }
+    var label = document.getElementById('status-label');
     if (label) label.textContent = status.charAt(0).toUpperCase() + status.slice(1);
   }
 
-  // Initial highlight
+  // Initial highlight on page load
   highlightStep("{{ order.status }}");
 
-  // Poll every 15 seconds for live updates
   {% if order.status != 'delivered' and order.status != 'cancelled' %}
-  setInterval(() => {
+  // Poll every 15 seconds for live status updates
+  setInterval(function() {
     fetch(ORDER_STATUS_URL)
-      .then(r => r.json())
-      .then(data => highlightStep(data.status))
-      .catch(() => {});
+      .then(function(r) { return r.json(); })
+      .then(function(data) { highlightStep(data.status); })
+      .catch(function() {});
   }, 15000);
   {% endif %}
 </script>

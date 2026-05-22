@@ -1,26 +1,32 @@
 {% extends "base.html" %}
 {% block title %}Loyalty Points — Little Lemon{% endblock %}
 {% block content %}
-<div class="container my-4">
-  <h2>⭐ Your Loyalty Points</h2>
+<section style="max-width:500px;margin:60px auto;padding:0 20px;text-align:center;">
+  <h1 style="font-family:'Markazi Text',serif;color:#3d5a4f;">⭐ Your Loyalty Points</h1>
 
-  <div class="card p-4 mt-4 text-center" style="max-width:400px;margin:auto;">
-    <div style="font-size:4rem;font-weight:700;color:#E8C832;">{{ loyalty.points }}</div>
-    <div class="text-muted">points available</div>
-    <hr>
-    <p class="mb-1">💡 Earn <strong>1 point</strong> for every <strong>RM 1</strong> you spend.</p>
-    <p class="mb-1">🎁 Redeem <strong>100 points</strong> for <strong>RM 1</strong> off your order.</p>
-    <hr>
-    <a href="{% url 'menu' %}" class="btn btn-warning fw-bold mt-2">Order Now to Earn Points</a>
+  <div style="background:#fff;border:1px solid #eee;border-radius:16px;padding:40px;margin-top:24px;
+              box-shadow:0 4px 16px rgba(0,0,0,.06);">
+    <div style="font-size:5rem;font-weight:700;color:#f4ce14;">{{ loyalty.points }}</div>
+    <div style="color:#999;margin-bottom:20px;">points available</div>
+    <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
+    <p style="margin:8px 0;">💡 Earn <strong>1 point</strong> for every <strong>RM 1</strong> spent.</p>
+    <p style="margin:8px 0;">🎁 Redeem <strong>100 points</strong> = <strong>RM 1</strong> off.</p>
+    <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
+    <a href="{% url 'menu' %}"
+       style="display:inline-block;margin-top:12px;padding:14px 32px;
+              background:#f4ce14;color:#333;border-radius:8px;font-weight:700;
+              text-decoration:none;">
+      Order Now to Earn Points
+    </a>
   </div>
 
-  <div class="mt-4" style="max-width:400px;margin:auto;">
-    <h6>How it works:</h6>
-    <ol>
+  <div style="text-align:left;margin-top:32px;">
+    <h5 style="color:#3d5a4f;">How it works:</h5>
+    <ol style="color:#555;line-height:2;">
       <li>Add items to your cart and place an order.</li>
       <li>Points are automatically added after checkout.</li>
-      <li>Use points at checkout for discounts.</li>
+      <li>Use points at checkout to get discounts.</li>
     </ol>
   </div>
-</div>
+</section>
 {% endblock %}

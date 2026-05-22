@@ -1,23 +1,28 @@
 {% extends "base.html" %}
 {% block title %}Checkout — Little Lemon{% endblock %}
 {% block content %}
-<div class="container my-4">
-  <h2>Checkout</h2>
+<section style="max-width:900px;margin:40px auto;padding:0 20px;">
+  <h1 style="font-family:'Markazi Text',serif;color:#3d5a4f;">Checkout</h1>
 
-  <div class="row g-4">
-    <!-- Order summary -->
-    <div class="col-md-7">
-      <h5>Order Summary</h5>
-      <table class="table table-sm table-bordered">
-        <thead class="table-light">
-          <tr><th>Item</th><th>Qty</th><th>Subtotal</th></tr>
+  <div style="display:flex;gap:32px;flex-wrap:wrap;">
+
+    <!-- LEFT: Order summary + notes -->
+    <div style="flex:2;min-width:280px;">
+      <h4 style="color:#3d5a4f;">Order Summary</h4>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:16px;">
+        <thead style="background:#f5f5f5;">
+          <tr>
+            <th style="padding:8px;border:1px solid #ddd;text-align:left;">Item</th>
+            <th style="padding:8px;border:1px solid #ddd;text-align:left;">Qty</th>
+            <th style="padding:8px;border:1px solid #ddd;text-align:left;">Subtotal</th>
+          </tr>
         </thead>
         <tbody>
           {% for ci in cart.cart_items.all %}
           <tr>
-            <td>{{ ci.menu_item.name }}</td>
-            <td>{{ ci.quantity }}</td>
-            <td>RM {{ ci.subtotal }}</td>
+            <td style="padding:8px;border:1px solid #ddd;">{{ ci.menu_item.name }}</td>
+            <td style="padding:8px;border:1px solid #ddd;">{{ ci.quantity }}</td>
+            <td style="padding:8px;border:1px solid #ddd;">RM {{ ci.subtotal }}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -25,38 +30,50 @@
 
       <p>Subtotal: <strong>RM {{ total }}</strong></p>
       {% if coupon %}
-        <p class="text-success">Coupon ({{ coupon.code }}): −RM {{ discount|floatformat:2 }}</p>
+        <p style="color:#27ae60;">Coupon ({{ coupon.code }}): −RM {{ discount|floatformat:2 }}</p>
       {% endif %}
-      <p class="fs-5">Total: <strong>RM {{ final_total }}</strong></p>
+      <p style="font-size:1.2rem;">Total: <strong>RM {{ final_total }}</strong></p>
 
-      <!-- Checkout form -->
       <form method="post" action="{% url 'checkout' %}">
         {% csrf_token %}
-        <div class="mb-3">
-          <label class="form-label">Special notes</label>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-weight:600;margin-bottom:6px;">Special notes</label>
           {{ checkout_form.notes }}
         </div>
-        <button type="submit" class="btn btn-warning fw-bold w-100">Place Order</button>
+        <button type="submit"
+          style="width:100%;padding:14px;background:#f4ce14;color:#333;border:none;
+                 border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;">
+          Place Order
+        </button>
       </form>
     </div>
 
-    <!-- Coupon + Loyalty -->
-    <div class="col-md-5">
-      <div class="card p-3 mb-3">
-        <h6>🎟️ Have a coupon?</h6>
-        <form method="post" action="{% url 'apply_coupon' %}" class="d-flex gap-2">
+    <!-- RIGHT: Coupon + Loyalty -->
+    <div style="flex:1;min-width:220px;">
+
+      <div style="background:#f9f9f9;border:1px solid #eee;border-radius:10px;padding:20px;margin-bottom:20px;">
+        <h5 style="margin:0 0 12px;color:#3d5a4f;">🎟️ Have a coupon?</h5>
+        <form method="post" action="{% url 'apply_coupon' %}" style="display:flex;gap:8px;">
           {% csrf_token %}
           {{ coupon_form.code }}
-          <button class="btn btn-outline-primary btn-sm">Apply</button>
+          <button style="padding:8px 14px;background:#3d5a4f;color:#fff;border:none;border-radius:6px;cursor:pointer;white-space:nowrap;">
+            Apply
+          </button>
         </form>
+        {% if coupon %}
+          <p style="color:#27ae60;margin-top:8px;font-size:.9rem;">✅ Coupon applied!</p>
+        {% endif %}
       </div>
 
-      <div class="card p-3">
-        <h6>⭐ Loyalty Points</h6>
-        <p>You have <strong>{{ loyalty.points }}</strong> points.</p>
-        <small class="text-muted">You will earn <strong>{{ final_total|floatformat:0 }}</strong> points for this order.</small>
+      <div style="background:#f9f9f9;border:1px solid #eee;border-radius:10px;padding:20px;">
+        <h5 style="margin:0 0 8px;color:#3d5a4f;">⭐ Loyalty Points</h5>
+        <p style="margin:0 0 6px;">You have <strong>{{ loyalty.points }}</strong> points.</p>
+        <small style="color:#999;">
+          You will earn <strong>{{ final_total|floatformat:0 }}</strong> points for this order.
+        </small>
       </div>
+
     </div>
   </div>
-</div>
+</section>
 {% endblock %}

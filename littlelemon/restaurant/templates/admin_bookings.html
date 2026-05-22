@@ -4,52 +4,74 @@
 <div class="container my-4">
   <h2>📋 Booking Management Dashboard</h2>
 
-  <!-- Filter by status -->
-  <div class="mb-3 d-flex gap-2 flex-wrap">
-    <a href="{% url 'admin_bookings' %}" class="btn btn-sm {% if not selected_status %}btn-warning{% else %}btn-outline-secondary{% endif %}">All</a>
-    {% for val, label in booking_statuses %}
-      <a href="?status={{ val }}" class="btn btn-sm {% if selected_status == val %}btn-warning{% else %}btn-outline-secondary{% endif %}">{{ label }}</a>
-    {% endfor %}
+  <!-- Filter by status — uses hardcoded values, no missing context variable -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+    <a href="{% url 'admin_bookings' %}"
+       style="padding:6px 14px;border-radius:6px;text-decoration:none;
+              background:{% if not selected_status %}#f4ce14{% else %}#eee{% endif %};
+              color:#333;border:1px solid #ccc;">All</a>
+    <a href="?status=pending"
+       style="padding:6px 14px;border-radius:6px;text-decoration:none;
+              background:{% if selected_status == 'pending' %}#f4ce14{% else %}#eee{% endif %};
+              color:#333;border:1px solid #ccc;">Pending</a>
+    <a href="?status=confirmed"
+       style="padding:6px 14px;border-radius:6px;text-decoration:none;
+              background:{% if selected_status == 'confirmed' %}#f4ce14{% else %}#eee{% endif %};
+              color:#333;border:1px solid #ccc;">Confirmed</a>
+    <a href="?status=cancelled"
+       style="padding:6px 14px;border-radius:6px;text-decoration:none;
+              background:{% if selected_status == 'cancelled' %}#f4ce14{% else %}#eee{% endif %};
+              color:#333;border:1px solid #ccc;">Cancelled</a>
   </div>
 
-  <table class="table table-hover table-bordered">
-    <thead class="table-light">
+  <table style="width:100%;border-collapse:collapse;">
+    <thead style="background:#f5f5f5;">
       <tr>
-        <th>#</th><th>Name</th><th>Guests</th><th>Date</th><th>Time</th>
-        <th>User</th><th>Status</th><th>Change Status</th>
+        <th style="padding:10px;border:1px solid #ddd;">#</th>
+        <th style="padding:10px;border:1px solid #ddd;">Name</th>
+        <th style="padding:10px;border:1px solid #ddd;">Guests</th>
+        <th style="padding:10px;border:1px solid #ddd;">Date</th>
+        <th style="padding:10px;border:1px solid #ddd;">Time</th>
+        <th style="padding:10px;border:1px solid #ddd;">User</th>
+        <th style="padding:10px;border:1px solid #ddd;">Status</th>
+        <th style="padding:10px;border:1px solid #ddd;">Change Status</th>
       </tr>
     </thead>
     <tbody>
       {% for b in bookings %}
       <tr>
-        <td>{{ b.pk }}</td>
-        <td>{{ b.first_name }} {{ b.last_name }}</td>
-        <td>{{ b.guest_number }}</td>
-        <td>{{ b.date|default:"—" }}</td>
-        <td>{{ b.time|default:"—" }}</td>
-        <td>{{ b.user.username|default:"Guest" }}</td>
-        <td>
-          <span class="badge
-            {% if b.status == 'confirmed' %}bg-success
-            {% elif b.status == 'cancelled' %}bg-danger
-            {% else %}bg-secondary{% endif %}">
+        <td style="padding:10px;border:1px solid #ddd;">{{ b.pk }}</td>
+        <td style="padding:10px;border:1px solid #ddd;">{{ b.first_name }} {{ b.last_name }}</td>
+        <td style="padding:10px;border:1px solid #ddd;">{{ b.guest_number }}</td>
+        <td style="padding:10px;border:1px solid #ddd;">{{ b.date|default:"—" }}</td>
+        <td style="padding:10px;border:1px solid #ddd;">{{ b.time|default:"—" }}</td>
+        <td style="padding:10px;border:1px solid #ddd;">{{ b.user.username|default:"Guest" }}</td>
+        <td style="padding:10px;border:1px solid #ddd;">
+          <span style="padding:3px 10px;border-radius:12px;font-size:.85rem;
+            background:{% if b.status == 'confirmed' %}#2ecc71{% elif b.status == 'cancelled' %}#e74c3c{% else %}#95a5a6{% endif %};
+            color:#fff;">
             {{ b.get_status_display }}
           </span>
         </td>
-        <td>
-          <form method="post" action="{% url 'admin_booking_update_status' b.pk %}" class="d-flex gap-1">
+        <td style="padding:10px;border:1px solid #ddd;">
+          <form method="post" action="{% url 'admin_booking_update_status' b.pk %}"
+                style="display:flex;gap:6px;">
             {% csrf_token %}
-            <select name="status" class="form-select form-select-sm">
+            <select name="status" style="padding:4px;border:1px solid #ccc;border-radius:4px;">
               <option value="pending"   {% if b.status == 'pending'   %}selected{% endif %}>Pending</option>
               <option value="confirmed" {% if b.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
               <option value="cancelled" {% if b.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
             </select>
-            <button class="btn btn-sm btn-warning">Save</button>
+            <button style="padding:4px 12px;background:#f4ce14;border:none;border-radius:4px;cursor:pointer;font-weight:600;">Save</button>
           </form>
         </td>
       </tr>
       {% empty %}
-        <tr><td colspan="8" class="text-center text-muted">No bookings found.</td></tr>
+        <tr>
+          <td colspan="8" style="padding:16px;text-align:center;color:#999;border:1px solid #ddd;">
+            No bookings found.
+          </td>
+        </tr>
       {% endfor %}
     </tbody>
   </table>

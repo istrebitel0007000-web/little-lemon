@@ -5,29 +5,29 @@
   <h2>🛒 Your Cart</h2>
 
   {% if cart.cart_items.all %}
-    <table class="table table-bordered mt-3">
-      <thead class="table-light">
+    <table style="width:100%;border-collapse:collapse;margin-top:20px;">
+      <thead style="background:#f5f5f5;">
         <tr>
           <th>Item</th><th>Price</th><th>Qty</th><th>Subtotal</th><th></th>
         </tr>
       </thead>
       <tbody>
-        {% for ci in cart.cart_items.select_related %}
+        {% for ci in cart.cart_items.all %}
         <tr>
           <td>{{ ci.menu_item.name }}</td>
           <td>RM {{ ci.menu_item.price }}</td>
           <td>
-            <form method="post" action="{% url 'cart_update' ci.menu_item.pk %}" class="d-flex gap-1">
+            <form method="post" action="{% url 'cart_update' ci.menu_item.pk %}" style="display:flex;gap:6px;">
               {% csrf_token %}
-              <input type="number" name="quantity" value="{{ ci.quantity }}" min="0" class="form-control form-control-sm" style="width:70px">
-              <button class="btn btn-sm btn-outline-secondary">Update</button>
+              <input type="number" name="quantity" value="{{ ci.quantity }}" min="0" style="width:70px;padding:4px;border:1px solid #ccc;border-radius:4px;">
+              <button style="padding:4px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;">Update</button>
             </form>
           </td>
           <td>RM {{ ci.subtotal }}</td>
           <td>
             <form method="post" action="{% url 'cart_remove' ci.menu_item.pk %}">
               {% csrf_token %}
-              <button class="btn btn-sm btn-danger">Remove</button>
+              <button style="padding:4px 10px;background:#c0392b;color:#fff;border:none;border-radius:4px;cursor:pointer;">Remove</button>
             </form>
           </td>
         </tr>
@@ -41,14 +41,14 @@
       </tfoot>
     </table>
 
-    <div class="d-flex gap-2 mt-3">
-      <a href="{% url 'menu' %}" class="btn btn-outline-secondary">← Continue Shopping</a>
-      <a href="{% url 'checkout' %}" class="btn btn-warning fw-bold">Proceed to Checkout</a>
+    <div style="display:flex;gap:12px;margin-top:16px;">
+      <a href="{% url 'menu' %}" style="padding:10px 20px;border:1px solid #333;border-radius:6px;text-decoration:none;color:#333;">← Continue Shopping</a>
+      <a href="{% url 'checkout' %}" style="padding:10px 20px;background:#f4ce14;color:#333;border:none;border-radius:6px;text-decoration:none;font-weight:700;">Proceed to Checkout</a>
     </div>
 
   {% else %}
-    <div class="alert alert-info mt-4">
-      Your cart is empty. <a href="{% url 'menu' %}">Browse the menu</a>
+    <div style="background:#e8f5e9;padding:16px;border-radius:8px;margin-top:24px;">
+      Your cart is empty. <a href="{% url 'menu' %}" style="color:#3d5a4f;">Browse the menu</a>
     </div>
   {% endif %}
 </div>

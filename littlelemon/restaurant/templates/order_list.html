@@ -1,40 +1,53 @@
 {% extends "base.html" %}
 {% block title %}My Orders — Little Lemon{% endblock %}
 {% block content %}
-<div class="container my-4">
-  <h2>My Orders</h2>
+<section style="max-width:900px;margin:40px auto;padding:0 20px;">
+  <h1 style="font-family:'Markazi Text',serif;color:#3d5a4f;">My Orders</h1>
 
   {% if orders %}
-    <table class="table table-hover mt-3">
-      <thead class="table-light">
-        <tr><th>#</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr>
+    <table style="width:100%;border-collapse:collapse;margin-top:20px;">
+      <thead style="background:#f5f5f5;">
+        <tr>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">#</th>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">Date</th>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">Items</th>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">Total</th>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">Status</th>
+          <th style="padding:10px;border:1px solid #ddd;text-align:left;">Track</th>
+        </tr>
       </thead>
       <tbody>
         {% for order in orders %}
         <tr>
-          <td>#{{ order.pk }}</td>
-          <td>{{ order.created_at|date:"d M Y H:i" }}</td>
-          <td>{{ order.items.count }} item(s)</td>
-          <td>RM {{ order.total }}</td>
-          <td>
-            <span class="badge
-              {% if order.status == 'delivered' %}bg-success
-              {% elif order.status == 'cancelled' %}bg-danger
-              {% elif order.status == 'preparing' %}bg-warning text-dark
-              {% elif order.status == 'ready' %}bg-info text-dark
-              {% else %}bg-secondary{% endif %}">
+          <td style="padding:10px;border:1px solid #ddd;">#{{ order.pk }}</td>
+          <td style="padding:10px;border:1px solid #ddd;">{{ order.created_at|date:"d M Y H:i" }}</td>
+          <td style="padding:10px;border:1px solid #ddd;">{{ order.items.count }} item(s)</td>
+          <td style="padding:10px;border:1px solid #ddd;">RM {{ order.total }}</td>
+          <td style="padding:10px;border:1px solid #ddd;">
+            <span style="padding:3px 10px;border-radius:12px;font-size:.85rem;color:#fff;
+              background:
+                {% if order.status == 'delivered' %}#27ae60
+                {% elif order.status == 'cancelled' %}#e74c3c
+                {% elif order.status == 'preparing' %}#f39c12
+                {% elif order.status == 'ready' %}#2980b9
+                {% else %}#95a5a6{% endif %};">
               {{ order.get_status_display }}
             </span>
           </td>
-          <td><a href="{% url 'order_detail' order.pk %}" class="btn btn-sm btn-outline-primary">Track</a></td>
+          <td style="padding:10px;border:1px solid #ddd;">
+            <a href="{% url 'order_detail' order.pk %}"
+               style="color:#3d5a4f;font-weight:600;text-decoration:none;">
+              Track →
+            </a>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   {% else %}
-    <div class="alert alert-info mt-4">
-      No orders yet. <a href="{% url 'menu' %}">Order something!</a>
+    <div style="background:#e8f5e9;padding:16px;border-radius:8px;margin-top:24px;">
+      No orders yet. <a href="{% url 'menu' %}" style="color:#3d5a4f;">Order something!</a>
     </div>
   {% endif %}
-</div>
+</section>
 {% endblock %}
