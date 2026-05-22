@@ -46,6 +46,10 @@ urlpatterns = [
     path('admin-bookings/',              views.admin_bookings,               name='admin_bookings'),
     path('admin-bookings/<int:pk>/status/', views.admin_booking_update_status, name='admin_booking_update_status'),
 
+    # ── ADMIN ORDER DASHBOARD ────────────────────────────────────────────────────
+    path('admin-orders/',                 views.admin_orders,                name='admin_orders'),
+    path('admin-orders/<int:pk>/status/', views.admin_order_update_status,   name='admin_order_update_status'),
+
     # ── AUTH ─────────────────────────────────────────────────────
     path('register/', views.register, name='register'),
     path('login/',  auth_views.LoginView.as_view(template_name='login.html'),  name='login'),

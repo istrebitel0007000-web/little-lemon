@@ -23,7 +23,8 @@
       <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
       <li><a href="{% url 'loyalty' %}">⭐ Points</a></li>
       {% if user.is_staff %}
-        <li><a href="{% url 'admin_bookings' %}">📋 Admin</a></li>
+        <li><a href="{% url 'admin_bookings' %}">📋 Bookings</a></li>
+        <li><a href="{% url 'admin_orders' %}">📦 Orders</a></li>
       {% endif %}
       <li>
         <form action="{% url 'logout' %}" method="post" style="display:inline;">

@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}Order Management — Little Lemon{% endblock %}
+{% block content %}
+<section style="max-width:1100px;margin:40px auto;padding:0 20px;">
+
+  <h1 style="font-family:'Markazi Text',serif;color:#3d5a4f;">📦 Order Management Dashboard</h1>
+
+  <!-- Summary cards -->
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin:24px 0;">
+
+    <a href="{% url 'admin_orders' %}"
+       style="flex:1;min-width:120px;text-align:center;padding:16px;border-radius:10px;
+              text-decoration:none;
+              background:{% if not selected_status %}#f4ce14{% else %}#f5f5f5{% endif %};
+              border:1px solid #ddd;color:#333;">
+      <div style="font-size:1.6rem;font-weight:700;">{{ counts.pending|add:counts.confirmed|add:counts.preparing|add:counts.ready|add:counts.delivered|add:counts.cancelled }}</div>
+      <div style="font-size:.85rem;margin-top:4px;">All</div>
+    </a>
+
+    <a href="?status=pending"
+       style="flex:1;min-width:120px;text-align:center;padding:16px;border-radius:10px;
+              text-decoration:none;
+              background:{% if selected_status == 'pending' %}#f4ce14{% else %}#f5f5f5{% endif %};
+              border:1px solid #ddd;color:#333;">
+      <div style="font-size:1.6rem;font-weight:700;">{{ counts.pending }}</div>
+      <div style="font-size:.85rem;margin-top:4px;">🕐 Pending</div>
+    </a>
+
+    <a href="?status=confirmed"
+       style="flex:1;min-width:120px;text-align:center;padding:16px;border-radius:10px;
+              text-decoration:none;
+              background:{% if selected_status == 'confirmed' %}#f4ce14{% else %}#f5f5f5{% endif %};
+              border:1px solid #ddd;color:#333;">
+      <div style="font-size:1.6rem;font-weight:700;">{{ counts.confirmed }}</div>
+      <div style="font-size:.85rem;margin-top:4px;">✅ Confirmed</div>
+    </a>
+
+    <a href="?status=preparing"
+       style="flex:1;min-width:120px;text-align:center;padding:16px;border-radius:10px;
+              text-decoration:none;
+              background:{% if selected_status == 'preparing' %}#f4ce14{% else %}#f5f5f5{% endif %};
+              border:1px solid #ddd;color:#333;">
+      <div style="font-size:1.6rem;font-weight:700;">{{ counts.preparing }}</div>
+      <div style="font-size:.85rem;margin-top:4px;">👨‍🍳 Preparing</div>
+    </a>
+
+    <a href="?status=ready"
+       style="flex:1;min-width:120px;text-align:center;padding:16px;border-radius:10px;
+              text-decoration:none;
+              background:{% if selected_status == 'ready' %}#f4ce14{% else %}#f5f5f5{% endif %};
+              border:1px solid #ddd;color:#333;">
+      <div style="font-size:1.6rem;font-weight:700;">{{ counts.ready }}</div>
+      <div style="font-size:.85rem;margin-top:4px;">🍽️ Ready</div>
+    </a>
+
+    <a href="?status=delivered"
+       style="flex:1;min-width:120px;text-align:center;padding:16px;border-radius:10px;
+              text-decoration:none;
+              background:{% if selected_status == 'delivered' %}#f4ce14{% else %}#f5f5f5{% endif %};
+              border:1px solid #ddd;color:#333;">
+      <div style="font-size:1.6rem;font-weight:700;">{{ counts.delivered }}</div>
+      <div style="font-size:.85rem;margin-top:4px;">🎉 Delivered</div>
+    </a>
+
+    <a href="?status=cancelled"
+       style="flex:1;min-width:120px;text-align:center;padding:16px;border-radius:10px;
+              text-decoration:none;
+              background:{% if selected_status == 'cancelled' %}#f4ce14{% else %}#f5f5f5{% endif %};
+              border:1px solid #ddd;color:#333;">
+      <div style="font-size:1.6rem;font-weight:700;">{{ counts.cancelled }}</div>
+      <div style="font-size:.85rem;margin-top:4px;">❌ Cancelled</div>
+    </a>
+
+  </div>
+
+  <!-- Orders table -->
+  {% if orders %}
+  <table style="width:100%;border-collapse:collapse;">
+    <thead style="background:#3d5a4f;color:#fff;">
+      <tr>
+        <th style="padding:12px;text-align:left;border:1px solid #2d4a3f;">#</th>
+        <th style="padding:12px;text-align:left;border:1px solid #2d4a3f;">Customer</th>
+        <th style="padding:12px;text-align:left;border:1px solid #2d4a3f;">Items</th>
+        <th style="padding:12px;text-align:left;border:1px solid #2d4a3f;">Total</th>
+        <th style="padding:12px;text-align:left;border:1px solid #2d4a3f;">Placed</th>
+        <th style="padding:12px;text-align:left;border:1px solid #2d4a3f;">Notes</th>
+        <th style="padding:12px;text-align:left;border:1px solid #2d4a3f;">Status</th>
+        <th style="padding:12px;text-align:left;border:1px solid #2d4a3f;">Update</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr style="background:{% cycle '#fff' '#fafafa' %};">
+
+        <td style="padding:12px;border:1px solid #eee;font-weight:600;">#{{ order.pk }}</td>
+
+        <td style="padding:12px;border:1px solid #eee;">
+          {{ order.user.username }}<br>
+          <small style="color:#999;">{{ order.user.email }}</small>
+        </td>
+
+        <td style="padding:12px;border:1px solid #eee;">
+          {% for item in order.items.all %}
+            <div style="font-size:.9rem;">{{ item.quantity }}× {{ item.menu_item.name }}</div>
+          {% endfor %}
+        </td>
+
+        <td style="padding:12px;border:1px solid #eee;font-weight:600;color:#3d5a4f;">
+          RM {{ order.total }}
+        </td>
+
+        <td style="padding:12px;border:1px solid #eee;font-size:.85rem;color:#666;">
+          {{ order.created_at|date:"d M Y" }}<br>
+          {{ order.created_at|date:"H:i" }}
+        </td>
+
+        <td style="padding:12px;border:1px solid #eee;font-size:.85rem;color:#555;">
+          {{ order.notes|default:"—" }}
+        </td>
+
+        <td style="padding:12px;border:1px solid #eee;">
+          <span style="padding:4px 12px;border-radius:12px;font-size:.85rem;font-weight:600;color:#fff;
+            background:
+              {% if order.status == 'pending' %}#95a5a6
+              {% elif order.status == 'confirmed' %}#2980b9
+              {% elif order.status == 'preparing' %}#f39c12
+              {% elif order.status == 'ready' %}#8e44ad
+              {% elif order.status == 'delivered' %}#27ae60
+              {% elif order.status == 'cancelled' %}#e74c3c
+              {% else %}#95a5a6{% endif %};">
+            {{ order.get_status_display }}
+          </span>
+        </td>
+
+        <td style="padding:12px;border:1px solid #eee;">
+          <form method="post" action="{% url 'admin_order_update_status' order.pk %}"
+                style="display:flex;gap:6px;align-items:center;">
+            {% csrf_token %}
+            <input type="hidden" name="current_filter" value="{{ selected_status }}">
+            <select name="status"
+                    style="padding:5px 8px;border:1px solid #ccc;border-radius:6px;font-size:.85rem;">
+              <option value="pending"   {% if order.status == 'pending'   %}selected{% endif %}>🕐 Pending</option>
+              <option value="confirmed" {% if order.status == 'confirmed' %}selected{% endif %}>✅ Confirmed</option>
+              <option value="preparing" {% if order.status == 'preparing' %}selected{% endif %}>👨‍🍳 Preparing</option>
+              <option value="ready"     {% if order.status == 'ready'     %}selected{% endif %}>🍽️ Ready</option>
+              <option value="delivered" {% if order.status == 'delivered' %}selected{% endif %}>🎉 Delivered</option>
+              <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>❌ Cancelled</option>
+            </select>
+            <button type="submit"
+              style="padding:5px 14px;background:#f4ce14;border:none;border-radius:6px;
+                     cursor:pointer;font-weight:600;font-size:.85rem;">
+              Save
+            </button>
+          </form>
+        </td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+    <div style="background:#e8f5e9;padding:20px;border-radius:10px;text-align:center;color:#3d5a4f;">
+      {% if selected_status %}
+        No orders with status <strong>{{ selected_status }}</strong>.
+        <a href="{% url 'admin_orders' %}" style="color:#3d5a4f;font-weight:600;">View all orders</a>
+      {% else %}
+        No orders yet.
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <!-- Quick nav to booking dashboard -->
+  <div style="margin-top:28px;">
+    <a href="{% url 'admin_bookings' %}"
+       style="color:#3d5a4f;text-decoration:none;font-weight:600;">
+      ← Go to Booking Dashboard
+    </a>
+  </div>
+
+</section>
+{% endblock %}

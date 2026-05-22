@@ -432,3 +432,62 @@ def order_status_json(request, pk):
         'status':     order.status,
         'updated_at': order.updated_at.strftime('%H:%M'),
     })
+
+
+# ── NEW: STAFF ORDER MANAGEMENT DASHBOARD ─────────────────────────────────────
+
+@login_required
+def admin_orders(request):
+    """Staff-only order management dashboard."""
+    if not request.user.is_staff:
+        messages.error(request, "Access denied.")
+        return redirect('home')
+
+    status  = request.GET.get('status', '')
+    orders  = Order.objects.select_related('user').prefetch_related(
+        'items__menu_item'
+    ).order_by('-created_at')
+
+    if status:
+        orders = orders.filter(status=status)
+
+    # counts for summary cards
+    counts = {
+        'pending':   Order.objects.filter(status='pending').count(),
+        'confirmed': Order.objects.filter(status='confirmed').count(),
+        'preparing': Order.objects.filter(status='preparing').count(),
+        'ready':     Order.objects.filter(status='ready').count(),
+        'delivered': Order.objects.filter(status='delivered').count(),
+        'cancelled': Order.objects.filter(status='cancelled').count(),
+    }
+
+    return render(request, 'admin_orders.html', {
+        'orders':          orders,
+        'selected_status': status,
+        'counts':          counts,
+    })
+
+
+@login_required
+@require_POST
+def admin_order_update_status(request, pk):
+    """Staff updates an order status."""
+    if not request.user.is_staff:
+        return JsonResponse({'error': 'Forbidden'}, status=403)
+
+    order      = get_object_or_404(Order, pk=pk)
+    new_status = request.POST.get('status')
+    valid      = [s[0] for s in Order.STATUS_CHOICES]
+
+    if new_status in valid:
+        order.status = new_status
+        order.save()
+        messages.success(request, f"Order #{pk} updated to '{new_status}'.")
+    else:
+        messages.error(request, "Invalid status.")
+
+    # go back to same filtered view
+    status_param = request.POST.get('current_filter', '')
+    if status_param:
+        return redirect(f"{'/admin-orders/'}?status={status_param}")
+    return redirect('admin_orders')
