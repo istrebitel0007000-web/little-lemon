@@ -1,37 +1,33 @@
 /* ═══════════════════════════════════════════════════════════════
-   LITTLE LEMON — BOLD MODERN DARK THEME
-   Covers: base, nav, header, footer, home, about, menu, book,
-           cart, checkout, orders, loyalty, bookings, admin pages
+   LITTLE LEMON — BOLD MODERN DARK (WARM BROWN #1a1205)
    ═══════════════════════════════════════════════════════════════ */
-
-/* ── Google Fonts already loaded in base.html ── */
 
 /* ── CSS Variables ──────────────────────────────────────────── */
 :root {
-  --bg:          #0f0f0f;
-  --bg2:         #1a1a1a;
-  --bg3:         #222222;
-  --card:        #181818;
-  --border:      #2a2a2a;
-  --border2:     #333333;
+  --bg:          #1a1205;
+  --bg2:         #211608;
+  --bg3:         #2a1e0a;
+  --card:        #221508;
+  --border:      #3a2810;
+  --border2:     #4a3518;
   --gold:        #f4ce14;
   --gold-hover:  #e0b800;
   --gold-dim:    rgba(244,206,20,0.12);
-  --text:        #f0f0f0;
-  --text2:       #aaaaaa;
-  --text3:       #666666;
+  --text:        #f0ece4;
+  --text2:       #b8a898;
+  --text3:       #7a6858;
   --red:         #e05555;
-  --red-light:   rgba(224,85,85,0.12);
+  --red-light:   rgba(224,85,85,0.15);
   --green:       #4caf7d;
-  --green-light: rgba(76,175,125,0.12);
+  --green-light: rgba(76,175,125,0.15);
   --radius:      12px;
   --radius-sm:   6px;
-  --shadow:      0 4px 24px rgba(0,0,0,0.4);
-  --shadow-sm:   0 2px 10px rgba(0,0,0,0.3);
+  --shadow:      0 4px 24px rgba(0,0,0,0.5);
+  --shadow-sm:   0 2px 10px rgba(0,0,0,0.4);
   --transition:  0.2s ease;
-  /* legacy vars used in menu.html */
-  --card-bg:     #181818;
-  --muted:       #aaaaaa;
+  /* legacy vars kept for menu.html compatibility */
+  --card-bg:     #221508;
+  --muted:       #b8a898;
 }
 
 /* ── Reset & Base ───────────────────────────────────────────── */
@@ -39,18 +35,21 @@
 
 html { scroll-behavior: smooth; }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Karla', sans-serif;
+html, body {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  font-family: 'Karla', sans-serif !important;
   font-size: 16px;
   line-height: 1.6;
   min-height: 100vh;
+}
+
+body {
   display: flex;
   flex-direction: column;
 }
 
-main { flex: 1; }
+main { flex: 1; background: var(--bg) !important; }
 
 img { max-width: 100%; display: block; }
 
@@ -81,28 +80,27 @@ input, textarea, select, button {
    HEADER & NAV
    ══════════════════════════════════════════════════════════════ */
 header {
-  background: var(--bg);
+  background: var(--bg) !important;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 0 8px;
+  padding: 14px 0 10px;
 }
 
 header img {
   height: 52px;
   width: auto;
   filter: brightness(0) invert(1);
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 nav {
-  background: var(--bg2);
+  background: var(--bg2) !important;
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(10px);
 }
 
 nav ul {
@@ -131,33 +129,24 @@ nav ul li button {
 
 nav ul li a:hover,
 nav ul li button:hover {
-  color: var(--text);
-  background: var(--bg3);
+  color: var(--gold);
+  background: var(--gold-dim);
 }
 
-/* Cart link special style */
 nav ul li a[href*="cart"] {
   color: var(--gold);
   font-weight: 600;
 }
 
-nav ul li a[href*="cart"]:hover {
-  background: var(--gold-dim);
-}
-
-/* Admin links */
 nav ul li a[href*="admin"] {
   color: var(--text3);
   font-size: 0.82rem;
 }
 
 /* ══════════════════════════════════════════════════════════════
-   MESSAGES / ALERTS
+   MESSAGES
    ══════════════════════════════════════════════════════════════ */
-.messages {
-  padding: 0 !important;
-  margin: 0 !important;
-}
+.messages { padding: 0 !important; margin: 0 !important; }
 
 .msg {
   background: var(--green-light) !important;
@@ -167,31 +156,33 @@ nav ul li a[href*="admin"] {
   border-radius: 0 !important;
   margin: 0 !important;
   font-size: 0.9rem;
+  list-style: none;
 }
 
-.msg.error { background: var(--red-light) !important; color: var(--red) !important; border-color: var(--red); }
+.msg.error   { background: var(--red-light) !important; color: var(--red) !important; border-color: var(--red); }
 .msg.warning { background: rgba(244,206,20,0.1) !important; color: var(--gold) !important; border-color: var(--gold); }
 
 /* ══════════════════════════════════════════════════════════════
    FOOTER
    ══════════════════════════════════════════════════════════════ */
 footer {
-  background: var(--bg2);
+  background: var(--bg2) !important;
   border-top: 1px solid var(--border);
-  padding: 24px;
+  padding: 28px 24px;
   text-align: center;
   color: var(--text3);
   font-size: 0.85rem;
 }
 
 /* ══════════════════════════════════════════════════════════════
-   SECTIONS & CONTAINERS
+   LAYOUT
    ══════════════════════════════════════════════════════════════ */
 section {
   padding: 40px 24px;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  background: var(--bg) !important;
 }
 
 article { width: 100%; }
@@ -206,52 +197,39 @@ article { width: 100%; }
 .column { width: 100%; }
 
 /* ══════════════════════════════════════════════════════════════
-   HOME PAGE (index.html)
+   HOME PAGE
    ══════════════════════════════════════════════════════════════ */
-
-/* Hero section */
 #hero {
-  background: linear-gradient(135deg, var(--bg2) 0%, #111 100%);
+  background: linear-gradient(135deg, var(--bg2) 0%, var(--bg) 100%) !important;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 56px 48px;
   text-align: center;
   position: relative;
   overflow: hidden;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 #hero::before {
   content: '';
   position: absolute;
   top: -60px; right: -60px;
-  width: 240px; height: 240px;
+  width: 260px; height: 260px;
   background: var(--gold);
   border-radius: 50%;
-  opacity: 0.04;
-}
-
-#hero::after {
-  content: '';
-  position: absolute;
-  bottom: -40px; left: -40px;
-  width: 160px; height: 160px;
-  background: var(--gold);
-  border-radius: 50%;
-  opacity: 0.03;
+  opacity: 0.05;
+  pointer-events: none;
 }
 
 #hero h1 {
   font-size: 3rem;
   color: var(--gold);
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   margin-bottom: 12px;
-  text-shadow: 0 0 40px rgba(244,206,20,0.3);
+  text-shadow: 0 0 40px rgba(244,206,20,0.4);
 }
 
-.heading_shadow {
-  text-shadow: 0 0 40px rgba(244,206,20,0.4) !important;
-}
+.heading_shadow { text-shadow: 0 0 40px rgba(244,206,20,0.4) !important; }
 
 #hero p {
   font-size: 1.2rem;
@@ -262,7 +240,7 @@ article { width: 100%; }
 #hero a {
   display: inline-block;
   background: var(--gold);
-  color: #111;
+  color: #1a1205;
   padding: 14px 36px;
   border-radius: var(--radius-sm);
   font-weight: 700;
@@ -277,34 +255,40 @@ article { width: 100%; }
   transform: translateY(-2px);
 }
 
-/* Home cards */
-section:not(:first-child) article {
-  background: var(--card);
+/* Home cards grid */
+section:last-child {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+section article {
+  background: var(--card) !important;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
-section:not(:first-child) > article:hover {
+section article:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow);
 }
 
-section:not(:first-child) article h2 {
+section article h2 {
   font-size: 1.6rem;
   color: var(--gold);
   padding: 20px 20px 0;
 }
 
-section:not(:first-child) article img {
+section article img {
   width: 100%;
   height: 200px;
   object-fit: cover;
   margin: 16px 0;
 }
 
-section:not(:first-child) article p {
+section article p {
   color: var(--text2);
   padding: 0 20px;
   font-size: 0.95rem;
@@ -312,30 +296,20 @@ section:not(:first-child) article p {
   margin-bottom: 12px;
 }
 
-section:not(:first-child) article ul {
-  padding: 0 20px 20px;
+section article ul {
+  padding: 0 20px 20px 36px;
   color: var(--text2);
   font-size: 0.9rem;
   line-height: 2;
   list-style: disc;
-  padding-left: 36px;
 }
 
-section:not(:first-child) article a {
+section article a:not(#hero a) {
   display: inline-block;
   margin: 0 20px 20px;
   color: var(--gold);
   font-weight: 600;
   font-size: 0.9rem;
-  border-bottom: 1px solid var(--gold-dim);
-  padding-bottom: 2px;
-}
-
-/* Home grid */
-section:last-child {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -345,13 +319,6 @@ section article h1 {
   font-size: 2.4rem;
   color: var(--gold);
   margin-bottom: 24px;
-}
-
-section article p {
-  color: var(--text2);
-  line-height: 1.8;
-  margin-bottom: 16px;
-  font-size: 0.95rem;
 }
 
 .figure img {
@@ -368,36 +335,26 @@ section article p {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   MENU PAGE
+   MENU PAGE — overrides the inline <style> block in menu.html
    ══════════════════════════════════════════════════════════════ */
 .menu-section {
   margin-bottom: 48px;
+  background: transparent !important;
 }
 
 .menu-section h2 {
   font-size: 1.8rem;
-  color: var(--text);
+  color: var(--text) !important;
   margin-bottom: 20px;
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.menu-section h2::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(to right, var(--border), transparent);
-  margin-left: 12px;
+  border-bottom: 1px solid var(--border) !important;
 }
 
 .menu-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
-  margin-top: 16px;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+  gap: 16px !important;
+  margin-top: 16px !important;
 }
 
 .menu-item {
@@ -408,44 +365,45 @@ section article p {
   transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition) !important;
   display: flex !important;
   flex-direction: column !important;
-  cursor: pointer;
+  text-decoration: none !important;
+  color: inherit !important;
 }
 
 .menu-item:hover {
   transform: translateY(-4px) !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6) !important;
   border-color: var(--gold) !important;
 }
 
 .menu-item-img {
   width: 100% !important;
-  height: 180px !important;
+  height: 185px !important;
   object-fit: cover !important;
   display: block !important;
   background: var(--bg3) !important;
-  transition: transform 0.3s ease !important;
+  transition: transform 0.35s ease !important;
 }
 
 .menu-item:hover .menu-item-img {
-  transform: scale(1.04);
+  transform: scale(1.05) !important;
 }
 
 .menu-item-img-placeholder {
   width: 100% !important;
-  height: 180px !important;
+  height: 185px !important;
   background: var(--bg3) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   font-size: 3rem !important;
-  color: var(--text3);
 }
 
 .menu-item-body {
-  padding: 14px 16px 16px !important;
+  padding: 14px 16px 18px !important;
   flex: 1 !important;
   display: flex !important;
   flex-direction: column !important;
+  background: var(--card) !important;
 }
 
 .menu-item h3 {
@@ -454,6 +412,7 @@ section article p {
   font-weight: 600 !important;
   color: var(--text) !important;
   font-family: 'Karla', sans-serif !important;
+  line-height: 1.35 !important;
 }
 
 .menu-item .desc {
@@ -483,9 +442,9 @@ section article p {
   white-space: nowrap !important;
 }
 
-.badge-veg     { background: rgba(76,175,125,0.2) !important; color: var(--green) !important; }
-.badge-spicy   { background: var(--red-light) !important; color: var(--red) !important; }
-.badge-popular { background: rgba(244,206,20,0.15) !important; color: var(--gold) !important; }
+.badge-veg     { background: rgba(76,175,125,0.2) !important;  color: var(--green) !important; }
+.badge-spicy   { background: var(--red-light) !important;       color: var(--red) !important; }
+.badge-popular { background: rgba(244,206,20,0.18) !important;  color: var(--gold) !important; }
 
 .subsection-title {
   font-family: 'Karla', sans-serif !important;
@@ -495,55 +454,43 @@ section article p {
   margin: 28px 0 12px !important;
   padding-left: 12px !important;
   border-left: 3px solid var(--gold) !important;
-  letter-spacing: 0.5px;
+  background: transparent !important;
 }
 
-/* Menu search bar */
-form input[type="text"] {
-  background: var(--bg2);
-  border: 1px solid var(--border2);
-  color: var(--text);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  width: 100%;
-  transition: border-color var(--transition);
+/* Search form */
+form[method="get"] {
+  background: transparent !important;
 }
 
-form input[type="text"]:focus {
-  outline: none;
-  border-color: var(--gold);
+form[method="get"] input[type="text"] {
+  background: var(--bg2) !important;
+  border: 1px solid var(--border2) !important;
+  color: var(--text) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 10px 14px !important;
 }
 
-form input[type="text"]::placeholder { color: var(--text3); }
-
-/* ══════════════════════════════════════════════════════════════
-   BUTTONS (global)
-   ══════════════════════════════════════════════════════════════ */
-button[type="submit"],
-input[type="submit"],
-.btn-primary {
-  background: var(--gold);
-  color: #111;
-  border: none;
-  padding: 11px 24px;
-  border-radius: var(--radius-sm);
-  font-weight: 700;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: background var(--transition), transform var(--transition);
+form[method="get"] input[type="text"]:focus {
+  outline: none !important;
+  border-color: var(--gold) !important;
 }
 
-button[type="submit"]:hover,
-input[type="submit"]:hover {
-  background: var(--gold-hover);
-  transform: translateY(-1px);
+form[method="get"] input::placeholder { color: var(--text3) !important; }
+
+form[method="get"] button[type="submit"] {
+  background: var(--gold) !important;
+  color: #1a1205 !important;
+  border: none !important;
+  padding: 10px 20px !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
 }
 
 /* ══════════════════════════════════════════════════════════════
-   FORMS (book, register, login)
+   FORMS (book, login, register)
    ══════════════════════════════════════════════════════════════ */
-form p label,
-form label {
+form p label, form label {
   display: block;
   color: var(--text2);
   font-size: 0.9rem;
@@ -554,7 +501,7 @@ form label {
 form p input,
 form p select,
 form p textarea,
-form input:not([type="submit"]):not([type="checkbox"]),
+form input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]),
 form select,
 form textarea {
   background: var(--bg2) !important;
@@ -577,44 +524,54 @@ form textarea:focus {
 }
 
 form p { margin-bottom: 16px; }
-
 form select option { background: var(--bg2); color: var(--text); }
 
-/* ══════════════════════════════════════════════════════════════
-   BOOKING PAGE
-   ══════════════════════════════════════════════════════════════ */
-.videowrap iframe {
-  width: 100%;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
+/* General submit button */
+button[type="submit"],
+input[type="submit"] {
+  background: var(--gold) !important;
+  color: #1a1205 !important;
+  border: none !important;
+  padding: 11px 24px !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  font-size: 0.95rem !important;
+  transition: background var(--transition), transform var(--transition) !important;
+}
+
+button[type="submit"]:hover,
+input[type="submit"]:hover {
+  background: var(--gold-hover) !important;
+  transform: translateY(-1px) !important;
 }
 
 /* ══════════════════════════════════════════════════════════════
-   LOGIN / REGISTER PAGES
+   BOOKING PAGE MAP
    ══════════════════════════════════════════════════════════════ */
-section article form {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 32px;
-  max-width: 480px;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   TABLES (used in cart, orders, admin pages)
-   ══════════════════════════════════════════════════════════════ */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--card);
+.videowrap {
   border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--border);
 }
 
+.videowrap iframe { width: 100%; display: block; }
+
+/* ══════════════════════════════════════════════════════════════
+   TABLES
+   ══════════════════════════════════════════════════════════════ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card) !important;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border) !important;
+}
+
 th {
-  background: var(--bg3);
-  color: var(--text2);
+  background: var(--bg3) !important;
+  color: var(--text2) !important;
   font-size: 0.85rem;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -625,108 +582,78 @@ th {
 
 td {
   padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border) !important;
   color: var(--text);
   font-size: 0.92rem;
   vertical-align: middle;
 }
 
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(255,255,255,0.02); }
+tr:last-child td { border-bottom: none !important; }
+tr:hover td { background: rgba(244,206,20,0.03); }
 
 tfoot td {
-  background: var(--bg3);
+  background: var(--bg3) !important;
   font-weight: 700;
   color: var(--gold);
 }
 
 /* ══════════════════════════════════════════════════════════════
-   STATUS BADGES (orders, bookings)
-   ══════════════════════════════════════════════════════════════ */
-span[style*="border-radius:12px"],
-span[style*="border-radius: 12px"] {
-  font-size: 0.78rem !important;
-  letter-spacing: 0.3px;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   INLINE STYLE OVERRIDES — dark theme for all pages
+   ALL INLINE-STYLED DIVS — dark theme override
    ══════════════════════════════════════════════════════════════ */
 
-/* Override white backgrounds on section/page wrappers */
-section[style*="background:#fff"],
+/* White/light backgrounds → dark */
 div[style*="background:#fff"],
 div[style*="background: #fff"],
 div[style*="background:#fafafa"],
-div[style*="background: #fafafa"],
 div[style*="background:#f9f9f9"],
+div[style*="background:#f5f5f5"],
+div[style*="background:#FDFCF0"],
+div[style*="background: #fafafa"],
 div[style*="background: #f9f9f9"],
-div[style*="background:#FDFCF0"] {
+section[style*="background:#fff"] {
   background: var(--card) !important;
   border-color: var(--border) !important;
 }
 
-/* Override light text colors */
-div[style*="color:#999"],
-div[style*="color: #999"],
-p[style*="color:#999"],
-p[style*="color: #999"],
-small[style*="color:#999"] {
+/* Light text → readable on dark */
+div[style*="color:#999"], p[style*="color:#999"],
+small[style*="color:#999"], span[style*="color:#999"] {
   color: var(--text3) !important;
 }
 
-div[style*="color:#555"],
-div[style*="color: #555"],
-p[style*="color:#555"] {
-  color: var(--text2) !important;
-}
+div[style*="color:#555"], p[style*="color:#555"] { color: var(--text2) !important; }
+div[style*="color:#333"], p[style*="color:#333"] { color: var(--text) !important; }
+div[style*="color:#888"], p[style*="color:#888"] { color: var(--text3) !important; }
 
-/* Override dark text on light backgrounds */
-div[style*="color:#333"],
-p[style*="color:#333"],
-h1[style*="color:#333"],
-h2[style*="color:#333"] {
-  color: var(--text) !important;
-}
+/* Green headings → gold */
+h1[style*="color:#3d5a4f"], h2[style*="color:#3d5a4f"],
+h3[style*="color:#3d5a4f"], h4[style*="color:#3d5a4f"],
+h5[style*="color:#3d5a4f"] { color: var(--gold) !important; }
 
-/* Override heading colors */
-h1[style*="color:#3d5a4f"],
-h2[style*="color:#3d5a4f"],
-h3[style*="color:#3d5a4f"],
-h4[style*="color:#3d5a4f"],
-h5[style*="color:#3d5a4f"] {
-  color: var(--gold) !important;
-}
+/* Dark headings on white → light */
+h1[style*="color:#1A1A1A"], h2[style*="color:#1A1A1A"],
+h1[style*="color:#111"],    h2[style*="color:#111"] { color: var(--text) !important; }
 
-/* Override border colors */
+/* Border overrides */
 div[style*="border:1px solid #eee"],
 div[style*="border: 1px solid #eee"],
-table[style*="border:1px solid #ddd"] {
+div[style*="border:1px solid #ddd"],
+div[style*="border: 1px solid #ddd"] {
   border-color: var(--border) !important;
 }
 
-/* Override table header backgrounds */
+/* thead overrides */
 thead[style*="background:#f5f5f5"],
-thead[style*="background: #f5f5f5"] {
-  background: var(--bg3) !important;
-}
-
-/* Override table header text */
-th[style*="color:#fff"] { color: var(--text2) !important; }
-
-/* Admin orders dark header override */
+thead[style*="background: #f5f5f5"],
 thead[style*="background:#3d5a4f"] {
   background: var(--bg3) !important;
 }
 
-/* Override input/select inside inline styled forms */
-select[style*="border:1px solid #ccc"],
-select[style*="border: 1px solid #ccc"] {
-  background: var(--bg2) !important;
-  border-color: var(--border2) !important;
-  color: var(--text) !important;
-}
+thead[style*="background:#3d5a4f"] th { color: var(--text2) !important; }
 
+/* Select/input overrides */
+select[style*="border:1px solid #ccc"],
+select[style*="border: 1px solid #ccc"],
 input[style*="border:1px solid #ccc"],
 input[style*="border: 1px solid #ccc"],
 input[style*="width:70px"] {
@@ -735,140 +662,88 @@ input[style*="width:70px"] {
   color: var(--text) !important;
 }
 
-/* Override alert/info boxes */
+/* Alert/info boxes */
 div[style*="background:#e8f5e9"] {
   background: var(--green-light) !important;
   color: var(--green) !important;
   border-radius: var(--radius-sm) !important;
 }
 
-/* Override card boxes on loyalty, booking_edit etc */
-div[style*="box-shadow:0 4px 16px"] {
+/* Box shadows → dark card */
+div[style*="box-shadow:0 4px 16px"],
+div[style*="box-shadow: 0 4px 16px"] {
   background: var(--card) !important;
   border: 1px solid var(--border) !important;
 }
 
-/* Override map section */
-.videowrap {
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   CART PAGE
-   ══════════════════════════════════════════════════════════════ */
-div[style*="display:flex"][style*="gap:6px"] select,
-div[style*="display:flex"][style*="gap:6px"] input {
-  background: var(--bg2) !important;
-  border: 1px solid var(--border2) !important;
-  color: var(--text) !important;
-  border-radius: var(--radius-sm) !important;
-}
-
-/* Cart buttons */
-button[style*="background:#c0392b"] {
-  background: var(--red) !important;
-  border: none !important;
-  color: #fff !important;
-}
-
+/* Buttons with inline styles */
 button[style*="background:#f4ce14"],
 button[style*="background: #f4ce14"] {
   background: var(--gold) !important;
-  color: #111 !important;
-  border: none !important;
+  color: #1a1205 !important;
 }
 
-button[style*="background:#f4ce14"]:hover {
-  background: var(--gold-hover) !important;
+button[style*="background:#c0392b"] {
+  background: var(--red) !important;
+  color: #fff !important;
 }
 
-/* ══════════════════════════════════════════════════════════════
-   ORDER TRACKING STEPS
-   ══════════════════════════════════════════════════════════════ */
-div[id^="circle-"] {
+button[style*="background:#3d5a4f"] {
   background: var(--bg3) !important;
-  border-color: var(--border2) !important;
-  color: var(--text2);
-}
-
-/* ══════════════════════════════════════════════════════════════
-   LOYALTY PAGE
-   ══════════════════════════════════════════════════════════════ */
-div[style*="font-size:5rem"],
-div[style*="font-size: 5rem"] {
-  color: var(--gold) !important;
-}
-
-/* Progress bar track */
-div[style*="background:#f0f0f0"][style*="height:4px"] {
-  background: var(--border2) !important;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   ADMIN DASHBOARDS
-   ══════════════════════════════════════════════════════════════ */
-
-/* Summary cards */
-a[style*="border-radius:10px"][style*="border:1px solid #ddd"] {
-  background: var(--card) !important;
-  border-color: var(--border) !important;
   color: var(--text) !important;
+  border-color: var(--border2) !important;
 }
 
-a[style*="border-radius:10px"][style*="background:#f4ce14"] {
-  background: var(--gold) !important;
-  color: #111 !important;
-}
+/* Links with inline dark color */
+a[style*="color:#3d5a4f"] { color: var(--gold) !important; }
+a[style*="color:#333"]     { color: var(--text2) !important; }
 
-a[style*="border-radius:10px"] div:first-child {
-  color: var(--gold) !important;
-}
-
-/* Filter buttons */
-a[style*="background:#eee"] {
+/* Filter/status badge links */
+a[style*="border-radius:10px"],
+a[style*="border-radius: 10px"] {
   background: var(--bg3) !important;
   border-color: var(--border) !important;
   color: var(--text2) !important;
 }
 
-a[style*="background:#f4ce14"][style*="border-radius:6px"] {
+a[style*="background:#f4ce14"] {
   background: var(--gold) !important;
-  color: #111 !important;
+  color: #1a1205 !important;
 }
+
+a[style*="background:#eee"] {
+  background: var(--bg3) !important;
+  color: var(--text2) !important;
+  border-color: var(--border) !important;
+}
+
+/* Progress bar */
+div[style*="background:#f0f0f0"][style*="height:4px"] {
+  background: var(--border2) !important;
+}
+
+/* Order tracking circles */
+div[id^="circle-"] {
+  background: var(--bg3) !important;
+  border-color: var(--border2) !important;
+}
+
+/* Loyalty points number */
+div[style*="font-size:5rem"],
+div[style*="font-size: 5rem"] { color: var(--gold) !important; }
 
 /* ══════════════════════════════════════════════════════════════
-   SPLASH SCREEN OVERRIDE
+   SPLASH SCREEN
    ══════════════════════════════════════════════════════════════ */
-#splash {
-  background: #0f0f0f !important;
-  min-height: 100vh !important;
-}
-
-#logo-card {
-  background: #1a1a1a !important;
-  border-color: #2a2a2a !important;
-}
-
-#text-little { color: #f4ce14 !important; }
-#text-lemon  { color: #f0f0f0 !important; }
-#text-restaurant { color: #666 !important; }
-#tagline { color: #555 !important; }
-
-#enter-btn {
-  border-color: #f4ce14 !important;
-  color: #f4ce14 !important;
-}
-
-#enter-btn:hover {
-  background: #f4ce14 !important;
-  color: #111 !important;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   LOGIN PAGE (allauth template override)
-   ══════════════════════════════════════════════════════════════ */
-.login-page, .signup-page { background: var(--bg); }
+#splash               { background: #1a1205 !important; }
+#logo-card            { background: #211608 !important; border-color: #3a2810 !important; }
+#text-little          { color: #f4ce14 !important; }
+#text-lemon           { color: #f0ece4 !important; }
+#text-restaurant      { color: #7a6858 !important; }
+#tagline              { color: #5a4838 !important; }
+#enter-btn            { border-color: #f4ce14 !important; color: #f4ce14 !important; }
+#enter-btn:hover      { background: #f4ce14 !important; color: #1a1205 !important; }
+#lemon-circle         { background: #f4ce14 !important; }
 
 /* ══════════════════════════════════════════════════════════════
    RESPONSIVE
@@ -880,14 +755,13 @@ a[style*="background:#f4ce14"][style*="border-radius:6px"] {
   #hero h1 { font-size: 2rem; }
   nav ul { gap: 2px; padding: 8px 12px; }
   nav ul li a, nav ul li button { padding: 6px 10px; font-size: 0.82rem; }
-  .menu-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .menu-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important; gap: 12px !important; }
   .menu-item-img { height: 140px !important; }
-  table { font-size: 0.82rem; }
   th, td { padding: 8px 10px; }
 }
 
 @media (max-width: 480px) {
-  .menu-grid { grid-template-columns: 1fr 1fr; }
+  .menu-grid { grid-template-columns: 1fr 1fr !important; }
   #hero h1 { font-size: 1.6rem; }
   nav ul { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; }
 }
