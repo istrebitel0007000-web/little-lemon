@@ -4,21 +4,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>{% block title %}Little Lemon{% endblock %}</title>
     <meta name="description" content="Little Lemon — book a table and explore our menu of Malay, Chinese, Thai and Western dishes." />
     <meta name="author" content="Little Lemon" />
 
     <!-- PWA -->
     <link rel="manifest" href="{% static 'manifest.webmanifest' %}" />
-    <meta name="theme-color" content="#0f0f0f" />
+    <meta name="theme-color" content="#1a1205" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="apple-mobile-web-app-title" content="Little Lemon" />
     <link rel="apple-touch-icon" href="{% static 'img/icon-192.png' %}" />
-
-    <!-- Favicon -->
     <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}" />
 
     <!-- Google Fonts -->
@@ -26,15 +23,34 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&family=Markazi+Text:wght@400;500&display=swap" rel="stylesheet" />
 
-    <!-- Main CSS — loaded normally (not preload) so dark theme applies immediately -->
+    <!-- Main CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <!-- CRITICAL: Force dark background everywhere — overrides any inline styles -->
+    <style>
+      html, body, main, section, article, div {
+        background-color: #1a1205 !important;
+      }
+      /* but keep images and specific elements normal */
+      img, iframe, video { background-color: transparent !important; }
+      /* nav and header keep their own colors */
+      nav { background-color: #211608 !important; }
+      header { background-color: #1a1205 !important; }
+      footer { background-color: #211608 !important; }
+      /* cards slightly lighter */
+      .menu-item, .menu-item-body {
+        background-color: #221508 !important;
+      }
+      /* text stays readable */
+      body, p, h1, h2, h3, h4, h5, li, span, td, th {
+        color: #f0ece4;
+      }
+    </style>
   </head>
 
   <body>
-    <!-- Header & Nav -->
     {% include 'partials/_header.html' %}
 
-    <!-- Django messages -->
     {% if messages %}
       <ul class="messages">
         {% for message in messages %}
@@ -43,13 +59,10 @@
       </ul>
     {% endif %}
 
-    <!-- Page content -->
     <main>{% block content %}{% endblock %}</main>
 
-    <!-- Footer -->
     {% include 'partials/_footer.html' %}
 
-    <!-- PWA service worker -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
