@@ -765,3 +765,4 @@ div[style*="font-size: 5rem"] { color: var(--gold) !important; }
   #hero h1 { font-size: 1.6rem; }
   nav ul { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; }
 }
+`nbody, html, main, .menu-section, div { background-color: #1a1205 !important; } img, iframe { background-color: transparent !important; } nav { background-color: #211608 !important; } .menu-item, .menu-item-body { background-color: #221508 !important; }
